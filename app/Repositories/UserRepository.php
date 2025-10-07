@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Models\User;
+
+class UserRepository
+{
+    /**
+     * Mengambil semua data pengguna.
+     */
+    public function getAllUsers()
+    {
+        return User::all();
+    }
+
+    /**
+     * Membuat pengguna baru.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function createUser(array $data): User
+    {
+        return User::create($data);
+    }
+
+    /**
+     * Memperbarui data pengguna.
+     *
+     * @param User $user
+     * @param array $data
+     * @return bool
+     */
+    public function updateUser(User $user, array $data): bool
+    {
+        return $user->update($data);
+    }
+
+    /**
+     * Menghapus pengguna.
+     *
+     * @param User $user
+     * @return bool|null
+     */
+    public function deleteUser(User $user): ?bool
+    {
+        return $user->delete();
+    }
+}

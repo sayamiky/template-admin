@@ -15,13 +15,19 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    {{-- [INI BAGIAN YANG HILANG] --}}
+                    {{-- Link ke Manajemen Pengguna --}}
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('Manajemen Pengguna') }}
+                    </x-nav-link>
                 </div>
             </div>
 
             <!-- Settings Dropdown & Dark Mode Toggle -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
 
-                <!-- [BARU] Tombol Toggle Dark Mode -->
+                <!-- Tombol Toggle Dark Mode -->
                 <button @click="darkMode = !darkMode" class="me-4 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg x-show="!darkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -75,16 +81,14 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
+            </x-responsive-nav-link>
 
-                {{-- [BARU] Link ke Manajemen Pengguna --}}
-                <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                    {{ __('Manajemen Pengguna') }}
-                </x-nav-link>
-            </div>
+            {{-- [INI BAGIAN YANG HILANG DI TAMPILAN MOBILE] --}}
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                {{ __('Manajemen Pengguna') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
