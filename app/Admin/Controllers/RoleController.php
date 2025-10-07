@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Admin\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Services\RoleService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Exception;
+use Illuminate\Support\Facades\Log;
+
+
+class RoleController extends Controller
+{
+    protected $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $roles = $this->roleService->listRoles();
+        return view('admin.roles.index', compact('roles'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.roles.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:roles,name',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            $this->roleService->createRole($validator->validated());
+
+            return redirect()->route('admin.roles.index')
+                ->with('success', 'Role created successfully.');
+        } catch (Exception $e) {
+            // Log::error('Error creating role: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'An error occurred while creating the role.')
+                ->withInput();
+        }
+    }
+
+    public function assignRoles(Request $request, $userId)
+    {
+        $request->validate([
+            'role_ids' => 'required|array',
+            'role_ids.*' => 'integer|exists:roles,id',
+        ]);
+
+        $this->roleService->assignRolesToUser($userId, $request->role_ids);
+
+        return redirect()->route('admin.roles.index')
+            ->with('success', 'Roles assigned successfully');
+    }
+
+    public function getUserRoles($userId)
+    {
+        $data = $this->roleService->getUserRoles($userId);
+
+        return response()->json($data);
+    }
+}
