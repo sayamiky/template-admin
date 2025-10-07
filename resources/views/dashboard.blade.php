@@ -1,18 +1,56 @@
-<x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    {{ __("Selamat datang kembali, ") }} {{ Auth::user()->name }}!
+                </div>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+
+            <!-- Placeholder untuk Widget/Statistik -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Total Pengguna</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">1</p>
+                        <p class="mt-1 text-sm text-gray-500">Pengguna terdaftar</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Menu Aktif</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">5</p>
+                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Laporan Masuk</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Aktivitas Hari Ini</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">10</p>
+                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
+                    </div>
+                </div>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-        </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
         </div>
     </div>
-</x-layouts.app>
+</x-app-layout>
