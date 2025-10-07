@@ -1,36 +1,56 @@
-    <x-admin-layout>
-        <x-slot name="title">
-            Halaman Dashboard
-        </x-slot>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
 
-        <!-- Breadcrumb Start -->
-        <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-title-md2 font-semibold text-black dark:text-white">
-                Dashboard
-            </h2>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    {{ __("Selamat datang kembali, ") }} {{ Auth::user()->name }}!
+                </div>
+            </div>
 
-            <nav>
-                <ol class="flex items-center gap-2">
-                    <li><a href="{{ route('dashboard') }}">Dashboard /</a></li>
-                    <li class="text-primary">Halaman Utama</li>
-                </ol>
-            </nav>
-        </div>
-        <!-- Breadcrumb End -->
+            <!-- Placeholder untuk Widget/Statistik -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Total Pengguna</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">1</p>
+                        <p class="mt-1 text-sm text-gray-500">Pengguna terdaftar</p>
+                    </div>
+                </div>
 
-        <!-- Isi konten dasbor dari src/partials/top-card-group.html dan lainnya -->
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-            <!-- Card Item Start -->
-            <div class="rounded-sm border border-stroke bg-white py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
-                <h4 class="text-title-md font-bold text-black dark:text-white">Total Pengguna</h4>
-                <div class="mt-4 flex items-end justify-between">
-                    <div>
-                        <h4 class="text-title-md font-bold text-black dark:text-white">1</h4>
-                        <span class="text-sm font-medium">Pengguna Terdaftar</span>
+                <!-- Card 2 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Menu Aktif</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">5</p>
+                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Laporan Masuk</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Aktivitas Hari Ini</h3>
+                        <p class="mt-2 text-3xl font-bold text-gray-900">10</p>
+                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
                     </div>
                 </div>
             </div>
-            <!-- Card Item End -->
         </div>
-
-    </x-admin-layout>
+    </div>
+</x-app-layout>
