@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{{-- Tambahkan x-data dan :class untuk mengontrol dark mode --}}
+{{-- Tambahkan x-data, x-init, dan :class untuk mengontrol dark mode --}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }"
     x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
