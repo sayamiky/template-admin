@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,13 +7,13 @@
     <title>Dashboard | SIM Pemerintah</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 </head>
-
 <body
     x-data="{ page: 'dashboard', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
     x-init="
          darkMode = JSON.parse(localStorage.getItem('darkMode'));
          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
-    :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
+    :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}"
+>
     <!-- ===== Preloader Start ===== -->
     @include('layouts.partials.preloader')
     <!-- ===== Preloader End ===== -->
@@ -46,5 +45,4 @@
     <!-- ===== Scripts ===== -->
     <script src="{{ asset('js/bundle.js') }}"></script>
 </body>
-
 </html>
