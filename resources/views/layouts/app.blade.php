@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-{{-- Tambahkan x-data dan :class di sini --}}
+{{-- Tambahkan x-data dan :class untuk mengontrol dark mode --}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
-    x-data="{
-        darkMode: localStorage.getItem('darkMode')
-        || (!!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      }"
+    x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }"
+    x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
     :class="{ 'dark': darkMode }">
 
 <head>
