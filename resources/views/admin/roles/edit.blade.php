@@ -1,67 +1,36 @@
-@extends('layouts.app')
+<x-admin-layout>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="py-3 mb-4">
+            <span class="text-muted fw-light">Manajemen Akses / Roles /</span> Edit Role
+        </h4>
 
-@section('content')
-    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-2xl p-8 mt-10">
-        <h2 class="text-2xl font-semibold mb-6">Edit Role</h2>
-        <p class="text-gray-500 mb-8">Set role permissions</p>
-
-        <form method="POST" action="{{ route('roles.update', $role->id) }}">
-            @csrf
-            @method('PUT')
-
-            <!-- Role Name -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Role Name</label>
-                <input type="text" name="name" value="{{ old('name', $role->name) }}"
-                    class="w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
-
-            <!-- Role Permissions -->
-            <div>
-                <h3 class="text-lg font-semibold mb-3">Role Permissions</h3>
-
-                <div class="flex justify-between items-center mb-3">
-                    <div class="flex items-center space-x-2">
-                        <input type="checkbox" id="select_all" class="rounded text-indigo-600">
-                        <label for="select_all" class="text-sm text-gray-600">Select All</label>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">Edit Role</h5>
+                    <div class="card-body">
+                        <form action="{{ route('roles.update', $role->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama Role</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" name="name" value="{{ old('name', $role->name) }}"
+                                    placeholder="Masukkan nama role" required />
+                                @error('name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary me-2">Simpan Perubahan</button>
+                                <a href="{{ route('roles.index') }}" class="btn btn-outline-secondary">Batal</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
-
-                <!-- Permissions Table -->
-                <div class="divide-y divide-gray-200">
-                    @foreach ($permissionGroups as $groupName => $permissions)
-                        <div class="py-3 grid grid-cols-4 items-center">
-                            <div class="font-medium text-gray-700">{{ $groupName }}</div>
-                            <div class="col-span-3 flex gap-8">
-                                @foreach ($permissions as $perm)
-                                    <label class="inline-flex items-center space-x-2">
-                                        <input type="checkbox" name="permissions[]" value="{{ $perm->name }}"
-                                            class="rounded text-indigo-600"
-                                            {{ in_array($perm->name, $rolePermissions) ? 'checked' : '' }}>
-                                        <span
-                                            class="text-gray-700 capitalize">{{ Str::after($perm->name, $groupName . ' ') }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
             </div>
-
-            <!-- Submit -->
-            <div class="flex justify-end mt-8 space-x-3">
-                <button type="submit"
-                    class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Submit</button>
-                <a href="{{ route('roles.index') }}"
-                    class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Cancel</a>
-            </div>
-        </form>
+        </div>
     </div>
-
-    <script>
-        document.getElementById('select_all').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('input[name="permissions[]"]');
-            checkboxes.forEach(cb => cb.checked = this.checked);
-        });
-    </script>
-@endsection
+</x-admin-layout>

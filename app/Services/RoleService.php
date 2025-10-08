@@ -15,6 +15,11 @@ class RoleService
         $this->roleRepo = $roleRepo;
     }
 
+    public function getAllRoles()
+    {
+        return $this->roleRepo->getAllRoles();
+    }
+
     public function listRoles()
     {
         return $this->roleRepo->getAllRoles();

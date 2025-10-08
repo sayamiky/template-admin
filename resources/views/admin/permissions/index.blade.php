@@ -1,49 +1,105 @@
-@extends('layouts.app')
+<x-admin-layout>
+    {{-- Pesan Sukses --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-@section('content')
-    <div class="container">
-        <h1>Daftar Permissions</h1>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="py-3 mb-4">
+            <span class="text-muted fw-light">Manajemen Akses /</span> Permissions
+        </h4>
 
-        <!-- Button Create -->
-        <a href="{{ route('permissions.create') }}" class="btn btn-primary mb-3">Create</a>
-
-        <!-- Form Cari -->
-        <form action="{{ route('permissions.index') }}" method="GET" class="mb-3 d-flex">
-            <input type="text" name="search" class="form-control me-2" placeholder="Cari role..."
-                value="{{ request('search') }}">
-            <button type="submit" class="btn btn-secondary">Cari</button>
-        </form>
-
-        <!-- List Data -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nama Permission</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($permissions as $permission)
-                    <tr>
-                        <td>{{ $permission->name }}</td>
-                        <td>
-                            <!-- Button Update -->
-                            <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-warning btn-sm">Update</a>
-                            <!-- Button Hapus -->
-                            <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Yakin hapus?')">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="2">Data tidak ditemukan.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Daftar Permissions</h5>
+                {{-- Tombol Tambah Permission --}}
+                <a href="{{ route('permissions.create') }}" class="btn btn-primary">
+                    <i class="ri-add-line me-1"></i> Tambah Permission
+                </a>
+            </div>
+            <div class="table-responsive text-nowrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Permission</th>
+                            <th>Guard</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @forelse ($permissions as $index => $permission)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td><strong>{{ $permission->name }}</strong></td>
+                                <td><span class="badge bg-label-secondary">{{ $permission->guard_name }}</span></td>
+                                <td>
+                                    <div class="d-flex">
+                                        {{-- Tombol Edit --}}
+                                        <a class="btn btn-sm btn-warning me-2"
+                                            href="{{ route('permissions.edit', $permission->id) }}">
+                                            <i class="ri-pencil-line"></i>
+                                        </a>
+                                        {{-- Tombol Delete --}}
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deletePermissionModal" data-id="{{ $permission->id }}">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center">Tidak ada data permission.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-@endsection
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="deletePermissionModal" tabindex="-1" aria-labelledby="deletePermissionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePermissionModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus permission ini?
+                </div>
+                <div class="modal-footer">
+                    <form id="deletePermissionForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const deleteModal = document.getElementById('deletePermissionModal');
+                deleteModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const permissionId = button.getAttribute('data-id');
+                    const form = document.getElementById('deletePermissionForm');
+                    let action = "{{ route('permissions.destroy', ':id') }}";
+                    action = action.replace(':id', permissionId);
+                    form.setAttribute('action', action);
+                });
+            });
+        </script>
+    @endpush
+</x-admin-layout>
+

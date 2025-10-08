@@ -7,7 +7,7 @@
       "slug": "dashboard"
     },
     {
-      "menuHeader": "Manajemen"
+      "menuHeader": "Manajemen Akses"
     },
     {
       "url": "/admin/users",
@@ -16,19 +16,16 @@
       "slug": "users"
     },
     {
-      "menuHeader": "Template UI"
+      "url": "/admin/roles",
+      "name": "Roles",
+      "icon": "ri-shield-user-line",
+      "slug": "roles"
     },
     {
-      "name": "Layouts",
-      "icon": "ri-layout-3-line",
-      "slug": "layouts",
-      "submenu": [
-        {
-          "url": "/layouts/without-menu",
-          "name": "Without menu",
-          "slug": "layouts-without-menu"
-        }
-      ]
+      "url": "/admin/permissions",
+      "name": "Permissions",
+      "icon": "ri-lock-unlock-line",
+      "slug": "permissions"
     }
   ]
 }

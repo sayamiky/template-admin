@@ -23,13 +23,18 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
     Route::put('/permissions/{permission}', [PermissionController::class, 'update'])->name('permissions.update');
     Route::delete('/permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+    
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('users', [UserController::class, 'store'])->name('users.store');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::patch('users/{user}', [UserController::class, 'update']);
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
 });
 
 Route::middleware(['auth', 'role:admin|operator'])->group(function () {

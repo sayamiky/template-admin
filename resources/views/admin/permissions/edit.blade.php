@@ -1,28 +1,45 @@
-@extends('layouts.app')
+<x-admin-layout>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="py-3 mb-4">
+            <span class="text-muted fw-light">Manajemen Akses / Permissions /</span> Edit Permission
+        </h4>
 
-@section('content')
-    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-2xl p-8 mt-10">
-        <h2 class="text-2xl font-semibold mb-6">Edit Permission</h2>
-        <p class="text-gray-500 mb-8">Set permission details</p>
-
-        <form method="POST" action="{{ route('permissions.update', $permission->id) }}">
-            @csrf
-            @method('PUT')
-
-            <!-- Permission Name -->
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Permission Name</label>
-                <input type="text" name="name" value="{{ old('name', $permission->name) }}"
-                    class="w-full border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">Edit Permission</h5>
+                    <div class="card-body">
+                        {{-- Form action akan kita implementasikan pada tahap selanjutnya --}}
+                        <form action="#" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nama Permission</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" name="name"
+                                    value="{{ old('name', $permission->name) }}"
+                                    placeholder="Masukkan nama permission" required />
+                                @error('name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="guard_name" class="form-label">Guard Name</label>
+                                <input type="text" class="form-control"
+                                    id="guard_name" name="guard_name"
+                                    value="{{ $permission->guard_name }}" readonly />
+                                <div class="form-text">Guard name tidak dapat diubah.</div>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary me-2">Simpan Perubahan</button>
+                                <a href="{{ route('permissions.index') }}" class="btn btn-outline-secondary">Batal</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-
-            <!-- Submit -->
-            <div class="flex justify-end mt-8 space-x-3">
-                <button type="submit"
-                    class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Submit</button>
-                <a href="{{ route('permissions.index') }}"
-                    class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Cancel</a>
-            </div>
-        </form>
+        </div>
     </div>
-@endsection
+</x-admin-layout>
