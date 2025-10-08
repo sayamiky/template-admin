@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Services;
-use App\Models\Role;
 use App\Models\User;
 use App\Repositories\RoleRepository;
-use Illuminate\Support\Facades\Log;
-use Exception;
 
 class RoleService
 {

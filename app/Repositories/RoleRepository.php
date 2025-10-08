@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Role;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\Permission\Models\Role;
 
 class RoleRepository
 {
