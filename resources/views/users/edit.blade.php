@@ -1,76 +1,74 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Pengguna: ') . $user->name }}
-        </h2>
-    </x-slot>
+<x-admin-layout>
+    <h4 class="py-3 mb-4">
+        <span class="text-muted fw-light">Manajemen / Pengguna /</span> Edit
+    </h4>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form method="POST" action="{{ route('users.update', $user) }}">
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Form Edit Pengguna</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('users.update', $user->id) }}" method="POST">
                         @csrf
-                        @method('PUT') {{-- Method spoofing untuk request PUT --}}
+                        @method('PUT')
 
-                        <!-- Name -->
-                        <div>
-                            <x-input-label for="name" :value="__('Nama')" />
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Nama Lengkap</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="John Doe" value="{{ old('name', $user->name) }}" required />
+                            @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
-                        <!-- Email Address -->
-                        <div class="mt-4">
-                            <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $user->email)" required autocomplete="username" />
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="john.doe@example.com" value="{{ old('email', $user->email) }}" required />
+                            @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
-                        <!-- Password -->
-                        <div class="mt-4">
-                            <x-input-label for="password" :value="__('Password (Opsional)')" />
-                            <x-text-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                autocomplete="new-password" />
-                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="mt-4">
-                            <x-input-label for="password_confirmation" :value="__('Konfirmasi Password')" />
-                            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" autocomplete="new-password" />
-                            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                        </div>
-
-                        <!-- Roles -->
-                        <div class="mt-4">
-                            <x-input-label for="roles" :value="__('Peran (Roles)')" />
-                            @foreach ($roles as $role)
-                            <div class="flex items-center mt-2">
-                                <input id="role_{{ $role->id }}" type="checkbox" name="roles[]" value="{{ $role->name }}"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                    {{ $user->hasRole($role->name) ? 'checked' : '' }}>
-                                <label for="role_{{ $role->id }}" class="ms-2 text-sm font-medium text-gray-900">{{ $role->name }}</label>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            @error('roles')
+                            <div class="text-danger small mb-2">{{ $message }}</div>
+                            @enderror
+                            <div class="row">
+                                @foreach ($roles as $role)
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" id="role-{{ $role->id }}"
+                                            @if(in_array($role->id, old('roles', $userRoles))) checked @endif>
+                                        <label class="form-check-label" for="role-{{ $role->id }}">
+                                            {{ $role->name }}
+                                        </label>
+                                    </div>
+                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                            <x-input-error :messages="$errors->get('roles')" class="mt-2" />
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <a href="{{ route('users.index') }}" class="text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Batal
-                            </a>
-                            <x-primary-button class="ms-4">
-                                {{ __('Simpan Perubahan') }}
-                            </x-primary-button>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Password Baru</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" />
+                            <div class="form-text">Kosongkan jika tidak ingin mengubah password.</div>
+                            @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="password_confirmation">Konfirmasi Password Baru</label>
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

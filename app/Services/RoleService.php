@@ -1,47 +1,42 @@
 <?php
 
 namespace App\Services;
-use App\Models\User;
+
 use App\Repositories\RoleRepository;
 
 class RoleService
 {
-    protected $roleRepo;
+    protected $roleRepository;
 
-    public function __construct(RoleRepository $roleRepo)
+    public function __construct(RoleRepository $roleRepository)
     {
-        $this->roleRepo = $roleRepo;
+        $this->roleRepository = $roleRepository;
     }
 
-    public function listRoles()
+    public function createRole(array $data)
     {
-        return $this->roleRepo->getAllRoles();
+        return $this->roleRepository->create($data);
     }
 
-    public function createRole($data)
+    public function updateRole($id, array $data)
     {
-        return $this->roleRepo->createRole($data);
+        return $this->roleRepository->update($id, $data);
     }
 
-    public function assignRolesToUser($userId, array $roleIds)
+    public function deleteRole($id)
     {
-        $user = User::findOrFail($userId);
-        return $this->roleRepo->assignRoleToUser($user, $roleIds);
+        return $this->roleRepository->delete($id);
     }
 
-    public function getUserRoles($userId)
+    /**
+     * =================================================================
+     * // TAMBAHKAN METHOD BARU DI SINI
+     * // Memanggil repository untuk mendapatkan semua role.
+     * =================================================================
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllRoles()
     {
-        $user = User::findOrFail($userId);
-        return $this->roleRepo->getUserRoles($user);
-    }
-
-    public function updateRole($roleId, $data)
-    {
-        return $this->roleRepo->updateRole($roleId, $data);
-    }
-
-    public function deleteRole($roleId)
-    {
-        return $this->roleRepo->deleteRole($roleId);
+        return $this->roleRepository->all();
     }
 }

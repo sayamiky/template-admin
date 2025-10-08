@@ -1,0 +1,34 @@
+{
+  "menu": [
+    {
+      "url": "/dashboard",
+      "name": "Dashboard",
+      "icon": "ri-home-smile-line",
+      "slug": "dashboard"
+    },
+    {
+      "menuHeader": "Manajemen"
+    },
+    {
+      "url": "/admin/users",
+      "name": "Pengguna",
+      "icon": "ri-group-line",
+      "slug": "users"
+    },
+    {
+      "menuHeader": "Template UI"
+    },
+    {
+      "name": "Layouts",
+      "icon": "ri-layout-3-line",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/layouts/without-menu",
+          "name": "Without menu",
+          "slug": "layouts-without-menu"
+        }
+      ]
+    }
+  ]
+}

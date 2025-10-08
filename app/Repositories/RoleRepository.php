@@ -2,99 +2,52 @@
 
 namespace App\Repositories;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+// Kita tidak lagi menggunakan "use App\Models\Role;" di sini untuk menghindari ambiguitas
+// Langsung gunakan model dari Spatie sebagai dasar
 use Spatie\Permission\Models\Role;
 
 class RoleRepository
 {
+    protected $role;
+
     /**
-     * Get all roles.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * =================================================================
+     * // PERUBAHAN UTAMA ADA DI SINI
+     * // Kita tidak lagi meng-inject model secara langsung.
+     * // Sebaliknya, kita membuat instance baru dari model yang benar.
+     * // Ini menyelesaikan masalah BindingResolutionException.
+     * =================================================================
      */
-    public function getAllRoles()
+    public function __construct()
     {
-        return Role::all();
+        // Gunakan model Role yang sudah dikonfigurasi di config/permission.php
+        $this->role = new (config('permission.models.role'));
     }
 
-    /**
-     * Find a role by ID.
-     *
-     * @param int $id
-     * @return Role
-     */
-    public function findRoleById($id)
+    public function create(array $data)
     {
-        return Role::findOrFail($id);
+        return $this->role->create($data);
     }
 
-    /**
-     * Create a new role.
-     *
-     * @param array $data
-     * @return Role
-     */
-    public function createRole(array $data)
+    public function update($id, array $data)
     {
-        return Role::create(array_merge($data, ['guard_name' => 'web']));
-    }
-
-    /**
-     * Update an existing role.
-     *
-     * @param int $id
-     * @param array $data
-     * @return Role
-     */
-    public function updateRole($id, array $data)
-    {
-        $role = $this->findRoleById($id);
-
+        $role = $this->role->find($id);
         $role->update($data);
         return $role;
     }
 
-    /**
-     * Delete a role by ID.
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function deleteRole($id)
+    public function delete($id)
     {
-        $role = $this->findRoleById($id);
-        return $role->delete();
-    }
-
-
-    /**
-     * Assign roles to a user.
-     *
-     * @param \App\Models\User $user
-     * @param array $roleIds
-     * @return void
-     * @throws Exception
-     */
-    public function assignRoleToUser($user, array $roleIds)
-    {
-        try {
-            $user->roles()->sync($roleIds);
-        } catch (Exception $e) {
-            Log::error('Error assigning roles to user: ' . $e->getMessage());
-            throw new Exception('An error occurred while assigning roles to the user.');
-        }
+        return $this->role->destroy($id);
     }
 
     /**
-     * Get roles assigned to a user.
+     * Mengambil semua data role dari database.
      *
-     * @param \App\Models\User $user
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getUserRoles($user)
+    public function all()
     {
-        return $user->roles;
+        return $this->role->all();
     }
 }

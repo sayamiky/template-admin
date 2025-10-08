@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class UserService
@@ -21,21 +20,30 @@ class UserService
         return $this->userRepository->getAllUsers();
     }
 
-    public function getAllRoles()
+    public function createUser(array $validatedData): User
     {
-        return Role::all();
-    }
+        $userData = [
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+        ];
 
-    public function storeUser(array $validatedData): User
-    {
-        $validatedData['password'] = Hash::make($validatedData['password']);
+        $user = $this->userRepository->createUser($userData);
 
-        $user = $this->userRepository->createUser($validatedData);
-        $user->syncRoles($validatedData['roles']);
+        // [PERBAIKAN] Ambil objek Role berdasarkan ID sebelum assign
+        $roles = Role::whereIn('id', $validatedData['roles'])->get();
+        $user->assignRole($roles);
 
         return $user;
     }
 
+    /**
+     * Memperbarui data pengguna.
+     *
+     * @param User $user
+     * @param array $validatedData
+     * @return bool
+     */
     public function updateUser(User $user, array $validatedData): bool
     {
         $updateData = [
@@ -43,17 +51,20 @@ class UserService
             'email' => $validatedData['email'],
         ];
 
-        if (!empty($validatedData['password'])) {
-            $updateData['password'] = Hash::make($validatedData['password']);
+        if (! empty($validatedData['password'])) {
+            $updateData['password'] = bcrypt($validatedData['password']);
         }
 
         $this->userRepository->updateUser($user, $updateData);
-        $user->syncRoles($validatedData['roles']);
+
+        // [PERBAIKAN] Ambil objek Role berdasarkan ID sebelum sync
+        $roles = Role::whereIn('id', $validatedData['roles'])->get();
+        $user->syncRoles($roles);
 
         return true;
     }
 
-    public function deleteUser(User $user): bool
+    public function deleteUser(User $user): ?bool
     {
         return $this->userRepository->deleteUser($user);
     }

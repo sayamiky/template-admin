@@ -1,56 +1,26 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<x-admin-layout>
+    {{-- Anda bisa mulai meletakkan konten dashboard di sini --}}
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("Selamat datang kembali, ") }} {{ Auth::user()->name }}!
-                </div>
-            </div>
-
-            <!-- Placeholder untuk Widget/Statistik -->
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-700">Total Pengguna</h3>
-                        <p class="mt-2 text-3xl font-bold text-gray-900">1</p>
-                        <p class="mt-1 text-sm text-gray-500">Pengguna terdaftar</p>
+    <div class="row">
+        <div class="col-lg-12 mb-4 order-0">
+            <div class="card">
+                <div class="d-flex align-items-end row">
+                    <div class="col-sm-7">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Selamat Datang, {{ Auth::user()->name }}! 🎉</h5>
+                            <p class="mb-4">
+                                Anda telah berhasil mengintegrasikan template Materio. Ini adalah halaman dashboard Anda.
+                            </p>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-700">Menu Aktif</h3>
-                        <p class="mt-2 text-3xl font-bold text-gray-900">5</p>
-                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-700">Laporan Masuk</h3>
-                        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
-                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold text-gray-700">Aktivitas Hari Ini</h3>
-                        <p class="mt-2 text-3xl font-bold text-gray-900">10</p>
-                        <p class="mt-1 text-sm text-gray-500">Contoh statistik</p>
+                    <div class="col-sm-5 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4">
+                            <img src="{{ asset('assets/img/illustrations/man-with-laptop-light.png') }}" height="140" alt="View Badge User" data-app-dark-img="illustrations/man-with-laptop-dark.png" data-app-light-img="illustrations/man-with-laptop-light.png">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+
+</x-admin-layout>
