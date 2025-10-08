@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    /**
-     * Menampilkan halaman utama dasbor.
-     */
-    public function index(): View
+    public function index()
     {
-        return view('dashboard');
+        $userCount = User::count();
+        $roleCount = Role::count();
+
+        return view('dashboard', compact('userCount', 'roleCount'));
     }
 }
