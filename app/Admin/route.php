@@ -3,6 +3,7 @@
 use App\Admin\Controllers\PermissionController;
 use App\Admin\Controllers\RoleController;
 use App\Admin\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
@@ -13,8 +14,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
-    Route::post('/users/{userId}/roles', [RoleController::class, 'assignRoles'])->name('users.assignRoles');
-    Route::get('/users/{userId}/roles', [RoleController::class, 'getUserRoles'])->name('users.getRoles');
+    // Route::post('/users/{userId}/roles', [RoleController::class, 'assignRoles'])->name('users.assignRoles');
+    // Route::get('/users/{userId}/roles', [RoleController::class, 'getUserRoles'])->name('users.getRoles');
 
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
     Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
@@ -29,4 +30,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+});
+
+Route::middleware(['auth', 'role:admin|operator'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
 });

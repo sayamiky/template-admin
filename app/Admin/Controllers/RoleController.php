@@ -103,6 +103,7 @@ class RoleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'permissions' => 'array', // from checkbox
         ]);
 
         if ($validator->fails()) {

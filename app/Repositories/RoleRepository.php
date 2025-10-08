@@ -75,16 +75,10 @@ class RoleRepository
      * @param \App\Models\User $user
      * @param array $roleIds
      * @return void
-     * @throws Exception
      */
     public function assignRoleToUser($user, array $roleIds)
     {
-        try {
-            $user->roles()->sync($roleIds);
-        } catch (Exception $e) {
-            Log::error('Error assigning roles to user: ' . $e->getMessage());
-            throw new Exception('An error occurred while assigning roles to the user.');
-        }
+        return $user->roles()->sync($roleIds);
     }
 
     /**
@@ -96,5 +90,16 @@ class RoleRepository
     public function getUserRoles($user)
     {
         return $user->roles;
+    }
+
+    /**
+     * Sync permissions for a role.
+     *
+     * @param Role $role
+     * @param array $permissions
+     */
+    public function syncPermissions(Role $role, array $permissions)
+    {
+        return $role->syncPermissions($permissions);
     }
 }

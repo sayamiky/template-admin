@@ -3,6 +3,8 @@
 namespace App\Services;
 use App\Models\User;
 use App\Repositories\RoleRepository;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class RoleService
 {
@@ -37,7 +39,12 @@ class RoleService
 
     public function updateRole($roleId, $data)
     {
-        return $this->roleRepo->updateRole($roleId, $data);
+        DB::transaction(function () use ($roleId, $data) {
+            $this->roleRepo->updateRole($roleId, $data);
+
+            // Update permission (sync)
+            $this->roleRepo->syncPermissions(Role::findOrFail($roleId), $data['permissions'] ?? []);
+        });
     }
 
     public function deleteRole($roleId)
