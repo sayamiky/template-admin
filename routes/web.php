@@ -28,4 +28,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-require __DIR__.'/../app/Admin/Route.php';
+require __DIR__.'/../app/Admin/route.php';

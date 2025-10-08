@@ -24,7 +24,6 @@ class RoleRepository
      *
      * @param int $id
      * @return Role
-     * @throws ModelNotFoundException
      */
     public function findRoleById($id)
     {
@@ -36,17 +35,11 @@ class RoleRepository
      *
      * @param array $data
      * @return Role
-     * @throws Exception
      */
     public function createRole(array $data)
     {
-        try {
-            return Role::create($data);
-        } catch (Exception $e) {
-            Log::error('Error creating role: ' . $e->getMessage());
-            throw new Exception('An error occurred while creating the role.');
-        }   
-    }   
+        return Role::create(array_merge($data, ['guard_name' => 'web']));
+    }
 
     /**
      * Update an existing role.
@@ -54,20 +47,13 @@ class RoleRepository
      * @param int $id
      * @param array $data
      * @return Role
-     * @throws ModelNotFoundException
-     * @throws Exception
      */
     public function updateRole($id, array $data)
     {
         $role = $this->findRoleById($id);
 
-        try {
-            $role->update($data);
-            return $role;
-        } catch (Exception $e) {
-            Log::error('Error updating role: ' . $e->getMessage());
-            throw new Exception('An error occurred while updating the role.');
-        }   
+        $role->update($data);
+        return $role;
     }
 
     /**
@@ -75,19 +61,11 @@ class RoleRepository
      *
      * @param int $id
      * @return bool
-     * @throws ModelNotFoundException
-     * @throws Exception
      */
     public function deleteRole($id)
     {
         $role = $this->findRoleById($id);
-
-        try {
-            return $role->delete();
-        } catch (Exception $e) {
-            Log::error('Error deleting role: ' . $e->getMessage());
-            throw new Exception('An error occurred while deleting the role.');
-        }   
+        return $role->delete();
     }
 
 
@@ -106,7 +84,7 @@ class RoleRepository
         } catch (Exception $e) {
             Log::error('Error assigning roles to user: ' . $e->getMessage());
             throw new Exception('An error occurred while assigning roles to the user.');
-        }   
+        }
     }
 
     /**
@@ -119,5 +97,4 @@ class RoleRepository
     {
         return $user->roles;
     }
-    
 }

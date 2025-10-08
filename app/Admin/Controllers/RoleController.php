@@ -3,13 +3,13 @@
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Support\Facades\Log;
-
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -54,10 +54,10 @@ class RoleController extends Controller
         try {
             $this->roleService->createRole($validator->validated());
 
-            return redirect()->route('admin.roles.index')
+            return redirect()->route('roles.index')
                 ->with('success', 'Role created successfully.');
         } catch (Exception $e) {
-            // Log::error('Error creating role: ' . $e->getMessage());
+            Log::error('Error creating role: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', 'An error occurred while creating the role.')
                 ->withInput();
@@ -82,5 +82,59 @@ class RoleController extends Controller
         $data = $this->roleService->getUserRoles($userId);
 
         return response()->json($data);
+    }
+
+
+    public function edit(Role $role)
+    {
+        $role = Role::findOrFail($role->id);
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
+
+        // Group permissions by module name
+        $permissions = Permission::all();
+        $permissionGroups = $permissions->groupBy(function ($perm) {
+            return explode(' ', $perm->name)[0]; // e.g. 'User Management Read' -> 'User Management'
+        });
+
+        return view('admin.roles.edit', compact('role', 'permissionGroups', 'rolePermissions'));
+    }
+
+    public function update(Request $request, Role $role)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            $this->roleService->updateRole($role->id, $validator->validated());
+
+            return redirect()->route('roles.index')
+                ->with('success', 'Role updated successfully.');
+        } catch (Exception $e) {
+            Log::error('Error updating role: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'An error occurred while updating the role.')
+                ->withInput();
+        }
+    }
+
+    public function destroy(Role $role)
+    {
+        try {
+            $this->roleService->deleteRole($role->id);
+
+            return redirect()->route('roles.index')
+                ->with('success', 'Role deleted successfully.');
+        } catch (Exception $e) {
+            Log::error('Error deleting role: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'An error occurred while deleting the role.');
+        }
     }
 }

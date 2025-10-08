@@ -37,4 +37,14 @@ class RoleService
         $user = User::findOrFail($userId);
         return $this->roleRepo->getUserRoles($user);
     }
+
+    public function updateRole($roleId, $data)
+    {
+        return $this->roleRepo->updateRole($roleId, $data);
+    }
+
+    public function deleteRole($roleId)
+    {
+        return $this->roleRepo->deleteRole($roleId);
+    }
 }
