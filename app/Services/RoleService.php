@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\RoleRepository;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class RoleService
 {
