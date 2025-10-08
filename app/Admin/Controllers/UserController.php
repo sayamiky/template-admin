@@ -1,83 +1,109 @@
 <?php
+
 namespace App\Admin\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
+use App\Services\RoleService;
+use App\Services\UserService;
+use App\Http\Controllers\Controller;
+use App\Services\PermissionService;
 
 class UserController extends Controller
 {
     protected $userService;
+    protected $roleService;
+    protected $permissionService;
 
-    // [DIUBAH] Inject UserService melalui constructor
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, RoleService $roleService, PermissionService $permissionService)
     {
         $this->userService = $userService;
+        $this->roleService = $roleService;
+        $this->permissionService = $permissionService;
     }
 
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        // [DIUBAH] Logika dipindahkan ke Service
         $users = $this->userService->getAllUsers();
         return view('users.index', compact('users'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        // [DIUBAH] Logika dipindahkan ke Service
-        $roles = $this->userService->getAllRoles();
+        $roles = $this->roleService->getAllRoles();
         return view('users.create', compact('roles'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'roles' => ['required', 'array'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'roles' => 'required|array',
         ]);
 
-        // [DIUBAH] Memanggil Service untuk menyimpan user
-        $this->userService->storeUser($validatedData);
+        $this->userService->createUser($validatedData);
 
-        return redirect()->route('users.index')->with('success', 'Pengguna baru berhasil ditambahkan.');
+        return redirect()->route('users.index')
+            ->with('success', 'User created successfully.');
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(User $user)
     {
-        // [DIUBAH] Logika dipindahkan ke Service
-        $roles = $this->userService->getAllRoles();
-        return view('users.edit', compact('user', 'roles'));
+        $roles = $this->roleService->getAllRoles();
+        $userRoles = $user->roles->pluck('name')->all();
+        return view('users.edit', compact('user', 'roles', 'userRoles'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
+    // [PERBAIKAN] Menggunakan Route Model Binding (User $user)
+    // Laravel akan otomatis mencari user berdasarkan ID dari URL
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-            'roles' => ['required', 'array'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'roles' => 'required|array',
         ]);
 
-        // [DIUBAH] Memanggil Service untuk update user
+        // [PERBAIKAN] Meneruskan objek $user yang sudah ditemukan ke service
         $this->userService->updateUser($user, $validatedData);
 
-        return redirect()->route('users.index')->with('success', 'Data pengguna berhasil diperbarui.');
+        return redirect()->route('users.index')
+            ->with('success', 'User updated successfully.');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(User $user)
     {
-        if ($user->id === auth()->id()) {
-            return redirect()->route('users.index')->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
-        }
-
-        // [DIUBAH] Memanggil Service untuk menghapus user
         $this->userService->deleteUser($user);
-
-        return redirect()->route('users.index')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->route('users.index')
+            ->with('success', 'User deleted successfully.');
     }
 }

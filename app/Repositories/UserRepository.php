@@ -15,6 +15,18 @@ class UserRepository
     }
 
     /**
+     * [BARU] Menemukan pengguna berdasarkan ID.
+     * Method ini ditambahkan untuk mengatasi error 'Call to undefined method'.
+     *
+     * @param int $id
+     * @return User|null
+     */
+    public function find(int $id): ?User
+    {
+        return User::find($id);
+    }
+
+    /**
      * Membuat pengguna baru.
      *
      * @param array $data
