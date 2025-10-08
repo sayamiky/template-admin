@@ -32,6 +32,7 @@ export default defineConfig({
 
                 // JS spesifik untuk halaman dashboard (contoh)
                 'resources/assets/js/dashboards-analytics.js',
+                'resources/assets/js/main.js',
             ],
             refresh: true,
         }),
