@@ -6,7 +6,7 @@
                     <h5 class="card-title mb-0">Edit Role: {{ $role->name }}</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('roles.update', $role->id) }}" method="POST">
+                    <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -68,7 +68,7 @@
                         {{-- Tombol Aksi --}}
                         <div class="col-12 mt-4">
                             <button type="submit" class="btn btn-primary me-sm-3 me-1">Simpan Perubahan</button>
-                            <a href="{{ route('roles.index') }}" class="btn btn-label-secondary">Batal</a>
+                            <a href="{{ route('admin.roles.index') }}" class="btn btn-label-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

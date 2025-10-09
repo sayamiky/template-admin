@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
 class UserService
 {
@@ -21,50 +20,69 @@ class UserService
         return $this->userRepository->getAllUsers();
     }
 
-    public function createUser(array $validatedData): User
+    public function createUser(array $data)
     {
-        $userData = [
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-        ];
-
-        $user = $this->userRepository->createUser($userData);
-
-        // [PERBAIKAN] Ambil objek Role berdasarkan ID sebelum assign
-        $roles = Role::whereIn('id', $validatedData['roles'])->get();
-        $user->assignRole($roles);
-
+        $data['password'] = Hash::make($data['password']);
+        $user = $this->userRepository->createUser($data);
+        if (isset($data['roles'])) {
+            $user->assignRole($data['roles']);
+        }
         return $user;
     }
 
-    public function getUserById(int $id): ?User
+    public function updateUser(User $user, array $data)
     {
-        return $this->userRepository->find($id);
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $this->userRepository->updateUser($user, $data);
+
+        if (isset($data['roles'])) {
+            $user->syncRoles($data['roles']);
+        } else {
+            $user->syncRoles([]);
+        }
+    }
+
+    public function deleteUser(User $user)
+    {
+        return $this->userRepository->deleteUser($user);
     }
 
     /**
-     * Memperbarui data pengguna.
+     * Menyiapkan data untuk server-side DataTables.
      *
-     * @param User $user
-     * @param array $validatedData
-     * @return User
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function updateUser(User $user, array $validatedData): User
+    public function getDataTable()
     {
-        return DB::transaction(function () use ($user, $validatedData) {
-            $updatedUser = $this->userRepository->updateUser($user, $validatedData);
+        $users = $this->userRepository->getAllWithRoles();
 
-            if (isset($validatedData['roles'])) {
-                $this->userRepository->syncRoles($updatedUser, $validatedData['roles']);
-            }
+        return datatables()->of($users)
+            ->addIndexColumn()
+            ->addColumn('role', function ($user) {
+                return $user->roles->pluck('name')->join(', ');
+            })
+            ->addColumn('action', function ($user) {
+                $editUrl = route('admin.users.edit', $user->id);
+                $deleteUrl = route('admin.users.destroy', $user->id);
 
-            return $updatedUser;
-        });
-    }
+                $actionButtons = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary me-1"><i class="ri-edit-line"></i></a>';
 
-    public function deleteUser(User $user): ?bool
-    {
-        return $this->userRepository->deleteUser($user);
+                $actionButtons .= '<button type="button" class="btn btn-sm btn-danger delete-btn" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteConfirmationModal"
+                                        data-url="' . $deleteUrl . '" 
+                                        data-name="' . htmlspecialchars($user->name) . '">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>';
+
+                return $actionButtons;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

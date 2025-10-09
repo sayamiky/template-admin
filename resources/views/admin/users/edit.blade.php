@@ -10,7 +10,7 @@
                     <h5 class="mb-0">Form Edit Pengguna</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('users.update', $user->id) }}" method="POST">
+                    <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -72,7 +72,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Batal</a>
                     </form>
                 </div>
             </div>

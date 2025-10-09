@@ -9,7 +9,7 @@
                 <h5 class="card-header">Formulir Tambah Pengguna</h5>
                 <div class="card-body">
                     {{-- Form mengarah ke route 'users.store' dengan metode POST --}}
-                    <form action="{{ route('users.store') }}" method="POST">
+                    <form action="{{ route('admin.users.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama</label>
@@ -57,7 +57,7 @@
 
                         <div class="mt-4">
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
+                            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>
