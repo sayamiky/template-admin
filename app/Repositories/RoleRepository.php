@@ -59,10 +59,11 @@ class RoleRepository
      * @param int $id
      * @return bool
      */
-    public function deleteRole($id)
+    public function deleteRole(string $id)
     {
-        $role = $this->findRoleById($id);
+        $role = $this->model->findOrFail($id);
         return $role->delete();
+
     }
 
 

@@ -132,9 +132,9 @@ class RoleController extends Controller
         }
     }
 
-    public function destroy(Role $role)
+    public function destroy(string $id)
     {
-        $this->roleService->deleteRole($role);
+        $this->roleService->deleteRole($id);
 
         return response()->json(['success' => 'Role berhasil dihapus.']);
     }
