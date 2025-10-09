@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -15,10 +16,12 @@ class PermissionController extends Controller
         $this->permissionService = $permissionService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = $this->permissionService->listPermissions();
-        return view('admin.permissions.index', compact('permissions'));
+        if ($request->ajax()) {
+            return $this->permissionService->getDataTable();
+        }
+        return view('admin.permissions.index');
     }
 
     public function create()

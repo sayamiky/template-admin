@@ -79,8 +79,9 @@ class RoleService
         });
     }
 
-    public function deleteRole(string $id)
+    public function deleteRole(Role $role)
     {
-        return $this->roleRepository->delete($id);
+        // Teruskan objek $role, bukan ID
+        return $this->roleRepo->deleteRole($role);
     }
 }
