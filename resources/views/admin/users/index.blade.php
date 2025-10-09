@@ -43,7 +43,8 @@
                                 </td>
                                 <td>
                                     <div class="d-flex">
-                                        <a class="btn btn-sm btn-warning me-2" href="{{ route('users.edit', $user->id) }}">
+                                        <a class="btn btn-sm btn-warning me-2"
+                                            href="{{ route('users.edit', $user->id) }}">
                                             <i class="ri-pencil-line"></i>
                                         </a>
                                         {{-- Tombol Delete --}}
@@ -67,7 +68,8 @@
     </div>
 
     <!-- Modal Konfirmasi Delete -->
-    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,4 +106,3 @@
         </script>
     @endpush
 </x-admin-layout>
-

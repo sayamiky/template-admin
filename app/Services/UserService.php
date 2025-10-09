@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class UserService
@@ -37,31 +38,29 @@ class UserService
         return $user;
     }
 
+    public function getUserById(int $id): ?User
+    {
+        return $this->userRepository->find($id);
+    }
+
     /**
      * Memperbarui data pengguna.
      *
      * @param User $user
      * @param array $validatedData
-     * @return bool
+     * @return User
      */
-    public function updateUser(User $user, array $validatedData): bool
+    public function updateUser(User $user, array $validatedData): User
     {
-        $updateData = [
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-        ];
+        return DB::transaction(function () use ($user, $validatedData) {
+            $updatedUser = $this->userRepository->updateUser($user, $validatedData);
 
-        if (! empty($validatedData['password'])) {
-            $updateData['password'] = bcrypt($validatedData['password']);
-        }
+            if (isset($validatedData['roles'])) {
+                $this->userRepository->syncRoles($updatedUser, $validatedData['roles']);
+            }
 
-        $this->userRepository->updateUser($user, $updateData);
-
-        // [PERBAIKAN] Ambil objek Role berdasarkan ID sebelum sync
-        $roles = Role::whereIn('id', $validatedData['roles'])->get();
-        $user->syncRoles($roles);
-
-        return true;
+            return $updatedUser;
+        });
     }
 
     public function deleteUser(User $user): ?bool

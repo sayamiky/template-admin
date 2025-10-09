@@ -28,7 +28,7 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->userService->getAllUsers();
-        return view('users.index', compact('users'));
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -37,7 +37,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = $this->roleService->getAllRoles();
-        return view('users.create', compact('roles'));
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -59,21 +59,13 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
     {
         $roles = $this->roleService->getAllRoles();
         $userRoles = $user->roles->pluck('name')->all();
-        return view('users.edit', compact('user', 'roles', 'userRoles'));
+        return view('admin.users.edit', compact('user', 'roles', 'userRoles'));
     }
 
     /**
@@ -87,7 +79,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'required|array',
+            'roles' => 'sometimes|array',
         ]);
 
         // [PERBAIKAN] Meneruskan objek $user yang sudah ditemukan ke service
