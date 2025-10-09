@@ -9,7 +9,7 @@
                 <div class="card mb-4">
                     <h5 class="card-header">Tambah Permission Baru</h5>
                     <div class="card-body">
-                        <form action="{{ route('permissions.store') }}" method="POST">
+                        <form action="{{ route('admin.permissions.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama Permission</label>
@@ -24,7 +24,7 @@
                             </div>
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Simpan</button>
-                                <a href="{{ route('permissions.index') }}" class="btn btn-outline-secondary">Batal</a>
+                                <a href="{{ route('admin.permissions.index') }}" class="btn btn-outline-secondary">Batal</a>
                             </div>
                         </form>
                     </div>

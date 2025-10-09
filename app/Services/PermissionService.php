@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Repositories\PermissionRepository;
+use Yajra\DataTables\Facades\DataTables;
 
 class PermissionService
 {

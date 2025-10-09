@@ -10,7 +10,7 @@
                     <h5 class="card-header">Edit Permission</h5>
                     <div class="card-body">
                         {{-- Form action akan kita implementasikan pada tahap selanjutnya --}}
-                        <form action="{{ route('permissions.update', $permission->id) }}" method="POST">
+                        <form action="{{ route('admin.permissions.update', $permission->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-primary me-2">Simpan Perubahan</button>
-                                <a href="{{ route('permissions.index') }}" class="btn btn-outline-secondary">Batal</a>
+                                <a href="{{ route('admin.permissions.index') }}" class="btn btn-outline-secondary">Batal</a>
                             </div>
                         </form>
                     </div>
