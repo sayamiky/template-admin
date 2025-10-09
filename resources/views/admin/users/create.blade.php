@@ -1,4 +1,8 @@
-<x-admin-layout>
+@extends('layouts.admin')
+
+@section('title', 'Tambah Pengguna')
+
+@section('content')
     <h4 class="py-3 mb-4">
         <span class="text-muted fw-light">Manajemen / Pengguna /</span> Tambah
     </h4>
@@ -8,7 +12,6 @@
             <div class="card mb-4">
                 <h5 class="card-header">Formulir Tambah Pengguna</h5>
                 <div class="card-body">
-                    {{-- Form mengarah ke route 'users.store' dengan metode POST --}}
                     <form action="{{ route('admin.users.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
@@ -25,6 +28,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
                         <div class="mb-3 form-password-toggle">
                             <label class="form-label" for="password">Password</label>
                             <div class="input-group input-group-merge">
@@ -46,7 +50,7 @@
                             <label for="roles" class="form-label">Role</label>
                             <select id="roles" name="roles[]" class="form-select @error('roles') is-invalid @enderror" multiple>
                                 @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                <option value="{{ $role->id }}" {{ in_array($role->id, old('roles', [])) ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endforeach
                             </select>
                             <div class="form-text"> Tahan tombol (Ctrl) atau (Command) untuk memilih lebih dari satu role. </div>
@@ -64,4 +68,5 @@
             </div>
         </div>
     </div>
-</x-admin-layout>
+@endsection
+

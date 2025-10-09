@@ -122,7 +122,7 @@ class RoleController extends Controller
         try {
             $this->roleService->updateRole($role->id, $validator->validated());
 
-            return redirect()->route('roles.index')
+            return redirect()->route('admin.roles.index')
                 ->with('success', 'Role updated successfully.');
         } catch (Exception $e) {
             Log::error('Error updating role: ' . $e->getMessage());

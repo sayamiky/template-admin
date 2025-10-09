@@ -5,10 +5,13 @@
 @section('title', 'Manajemen Role')
 
 @section('content')
-<div class="container-fluid">
+<h4 class="py-3 mb-4">
+        <span class="text-muted fw-light">Manajemen /</span> Role
+</h4>
+<div class="row">
+    <div class="col-md-12">
     <div id="notification-alert-container"></div>
-
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-header">
             <h5 class="card-title">Daftar Role</h5>
             <a href="{{ route('admin.roles.create') }}" class="btn btn-primary float-end">
@@ -32,7 +35,9 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
+
 
 {{-- Modal Konfirmasi Hapus --}}
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-hidden="true">

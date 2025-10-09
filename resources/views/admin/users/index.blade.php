@@ -5,35 +5,45 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('content')
-<div class="container-fluid">
-    {{-- [BARU] Container untuk menampilkan notifikasi sukses/gagal --}}
-    <div id="notification-alert-container"></div>
+<h4 class="py-3 mb-4">
+        <span class="text-muted fw-light">Manajemen /</span> Pengguna
+</h4>
+<div class="row">
+    <div class="col-md-12">
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">Daftar Pengguna</h5>
-            <a href="{{ route('admin.users.create') }}" class="btn btn-primary float-end">
-                <i class="ri-add-line me-1"></i> Tambah Pengguna
-            </a>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="users-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%">No</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th style="width: 15%">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- Body tabel akan diisi oleh DataTables --}}
-                    </tbody>
-                </table>
+            <div id="notification-alert-container"></div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Daftar Pengguna</h5>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary float-end">
+                        <i class="ri-add-line me-1"></i> Tambah Pengguna
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">No</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th style="width: 15%">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- Body tabel akan diisi oleh DataTables --}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
     </div>
 </div>
 

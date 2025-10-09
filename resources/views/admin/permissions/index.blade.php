@@ -3,11 +3,14 @@
 @section('title', 'Manajemen Izin Akses')
 
 @section('content')
-<div class="container-fluid">
-    {{-- Container untuk notifikasi --}}
+<h4 class="py-3 mb-4">
+        <span class="text-muted fw-light">Manajemen /</span> Permission
+</h4>
+<div class="row">
+    <div class="col-md-12">
     <div id="notification-alert-container"></div>
 
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-header">
             <h5 class="card-title">Daftar Izin Akses (Permissions)</h5>
             <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary float-end">Tambah Izin Akses</a>
@@ -28,6 +31,7 @@
                 </table>
             </div>
         </div>
+    </div>
     </div>
 </div>
 
