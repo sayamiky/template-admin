@@ -32,7 +32,6 @@
 
         <!-- User -->
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
-            {{-- PERBAIKAN: Menambahkan padding horizontal 'px-3' untuk memberi jarak --}}
             <a class="nav-link dropdown-toggle hide-arrow px-7" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
                     <img src="https://placehold.co/40x40/7367F0/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}" alt
