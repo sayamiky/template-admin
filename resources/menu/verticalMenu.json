@@ -13,19 +13,22 @@
       "url": "/admin/users",
       "name": "Pengguna",
       "icon": "ri-group-line",
-      "slug": "users"
+      "slug": "users",
+      "permission": "user-list"
     },
     {
       "url": "/admin/roles",
       "name": "Roles",
       "icon": "ri-shield-user-line",
-      "slug": "roles"
+      "slug": "roles",
+      "permission": "role-list"
     },
     {
       "url": "/admin/permissions",
       "name": "Permissions",
       "icon": "ri-lock-unlock-line",
-      "slug": "permissions"
+      "slug": "permissions",
+      "permission": "permission-list"
     }
   ]
 }
