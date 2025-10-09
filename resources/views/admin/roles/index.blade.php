@@ -20,11 +20,12 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="roles-table">
+                <table class="table table-hover" id="roles-table">
                     <thead>
                         <tr>
                             <th style="width: 5%">No</th>
                             <th>Nama Role</th>
+                            <th>Guard</th>
                             <th style="width: 15%">Aksi</th>
                         </tr>
                     </thead>
@@ -37,7 +38,6 @@
     </div>
     </div>
 </div>
-
 
 {{-- Modal Konfirmasi Hapus --}}
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-hidden="true">
@@ -79,6 +79,10 @@
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'guard_name',
+                    name: 'guard_name'
                 },
                 {
                     data: 'action',

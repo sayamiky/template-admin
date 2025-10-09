@@ -4,34 +4,37 @@
 
 @section('content')
 <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manajemen /</span> Permission
+    <span class="text-muted fw-light">Manajemen /</span> Permission
 </h4>
 <div class="row">
     <div class="col-md-12">
-    <div id="notification-alert-container"></div>
+        <div id="notification-alert-container"></div>
 
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Daftar Izin Akses (Permissions)</h5>
-            <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary float-end">Tambah Izin Akses</a>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="permissions-table">
-                    <thead>
-                        <tr>
-                            <th width="5%">No</th>
-                            <th>Nama</th>
-                            <th width="15%">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- Body tabel akan diisi oleh DataTables --}}
-                    </tbody>
-                </table>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Daftar Izin Akses (Permissions)</h5>
+                <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary float-end">
+                    <i class="ri-add-line me-1"></i> Tambah Izin Akses
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="permissions-table">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th>Nama</th>
+                                <th>Guard</th>
+                                <th width="15%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Body tabel akan diisi oleh DataTables --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </div>
 
@@ -76,6 +79,10 @@
                 {
                     data: 'name',
                     name: 'name'
+                },
+                {
+                    data: 'guard_name',
+                    name: 'guard_name'
                 },
                 {
                     data: 'action',
