@@ -3,10 +3,12 @@
     <!-- ! Hide app brand if nav-collapsed -->
     <div class="app-brand demo">
         <a href="{{ url('/') }}" class="app-brand-link">
+
             <span class="app-brand-logo demo">
-                @include('_partials.macros',["height"=>20])
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Lambang_Kabupaten_Badung.png"
+                    alt="Logo Kabupaten Badung" style="height: 40px;">
             </span>
-            <span class="app-brand-text demo menu-text fw-bold">{{ config('variables.templateName') }}</span>
+            <span class="app-brand-text demo menu-text fw-bold">DISKOMINFO</span>
         </a>
     </div>
 
