@@ -8,7 +8,7 @@ class MenuRepository
 {
     public function getAll()
     {
-        return Menu::with('children')->orderBy('order')->get();
+        return Menu::query();
     }
 
     public function getTopMenus()

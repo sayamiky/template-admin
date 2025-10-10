@@ -8,8 +8,11 @@
 'resources/assets/vendor/js/bootstrap.js',
 'resources/assets/vendor/libs/node-waves/node-waves.js',
 'resources/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js',
+'resources/assets/vendor/js/helpers.js',
 'resources/assets/vendor/js/menu.js',
+'resources/assets/js/config.js',
 ])
+
 
 <!-- ===============================
      DataTables JS

@@ -16,10 +16,12 @@ class MenuController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $menus = $this->service->getTopMenus();
-        return view('admin.menu.index', compact('menus'));
+        if ($request->ajax()) {
+            return $this->service->getDataTable();
+        }
+        return view('admin.menu.index');
     }
 
     public function create()
@@ -30,17 +32,10 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'icon' => 'required|string|max:50',
-            'route' => 'required|string|max:100',
-            'parent_id' => 'nullable|exists:menus,id',
-            'order' => 'required|integer',
-            'is_active' => 'boolean',
-        ]);
+        $this->service->createMenu($request->all());
 
-        $this->service->createMenu($validated);
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil dibuat.');
+        return redirect()->route('admin.menus.index')
+            ->with('success', 'Menu berhasil ditambahkan.');
     }
 
     public function edit(Menu $menu)
@@ -51,22 +46,19 @@ class MenuController extends Controller
 
     public function update(Request $request, Menu $menu)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'icon' => 'required|string|max:50',
-            'route' => 'required|string|max:100',
-            'parent_id' => 'nullable|exists:menus,id',
-            'order' => 'required|integer',
-            'is_active' => 'boolean',
-        ]);
+        $this->service->updateMenu($menu, $request->all());
 
-        $this->service->updateMenu($menu, $validated);
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil diperbarui.');
+        return redirect()->route('admin.menus.index')
+            ->with('success', 'Menu berhasil diperbarui.');
     }
 
     public function destroy(Menu $menu)
     {
-        $this->service->deleteMenu($menu);
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil dihapus.');
+        try {
+            $this->service->deleteMenu($menu);
+            return response()->json(['success' => 'Menu berhasil dihapus.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal menghapus data.'], 500);
+        }
     }
 }
