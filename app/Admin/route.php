@@ -5,6 +5,7 @@ use App\Admin\Controllers\PermissionController;
 use App\Admin\Controllers\RoleController;
 use App\Admin\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
@@ -19,4 +20,17 @@ Route::middleware(['auth', 'role:admin|operator'])->group(function () {
 
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+});
+
+Route::middleware(['auth'])->prefix('dynamic')->group(function () {
+    // Fetch all menus with a non-null route
+    $menus = Menu::whereNotNull('route')->get();
+
+    foreach ($menus as $menu) {
+        if (!Route::has($menu->route)) {
+            Route::get($menu->route, function () use ($menu) {
+                return view('admin.dynamic.' . $menu->name, ['menu' => $menu]);
+            })->name(str_replace('/', '.', trim($menu->route, '/')));
+        }
+    }
 });
