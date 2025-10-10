@@ -79,7 +79,8 @@ class UserController extends Controller
     {
         $this->userService->updateUser($user, $request->validated());
 
-        return response()->json(['success' => 'Pengguna berhasil diupdate.']);
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Pengguna berhasil diperbarui.');
     }
 
     /**

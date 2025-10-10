@@ -4,6 +4,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 @vite([
+'resources/assets/js/pages-account-settings-account.js',
 'resources/assets/vendor/libs/popper/popper.js',
 'resources/assets/vendor/js/bootstrap.js',
 'resources/assets/vendor/libs/node-waves/node-waves.js',

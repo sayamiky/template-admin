@@ -39,8 +39,8 @@ class UpdateUserRequest extends FormRequest
                 'confirmed',
                 Password::min(8)
             ],
-            'roles' => 'required|array',
-            'roles.*' => 'exists:roles,id',
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['string', 'exists:roles,name'],
         ];
     }
 }
