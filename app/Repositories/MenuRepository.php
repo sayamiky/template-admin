@@ -13,7 +13,7 @@ class MenuRepository
 
     public function getTopMenus()
     {
-        return Menu::whereNull('parent_id')->with('children')->orderBy('order')->get();
+        return Menu::active()->whereNull('parent_id')->with('children')->orderBy('order')->get();
     }
 
     public function find($id)

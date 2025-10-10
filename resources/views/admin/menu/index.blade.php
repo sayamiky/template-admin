@@ -28,6 +28,7 @@
                             <th>Parent</th>
                             <th>Route</th>
                             <th>Urutan</th>
+                            <th>Status</th>
                             <th width="15%" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -61,6 +62,12 @@
                                 <td>{{ $menu->parent?->name ?? '-' }}</td>
                                 <td>{{ $menu->route ?? '-' }}</td>
                                 <td>{{ $menu->order ?? '-' }}</td>
+                                <td>
+                                    @if ($menu->is_active)
+                                        <span class="badge bg-label-success">Aktif</span>
+                                    @else
+                                        <span class="badge bg-label-secondary">Nonaktif</span>
+                                    @endif
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <a href="{{ route('menus.edit', $menu->id) }}" class="btn btn-sm btn-warning">
