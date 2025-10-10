@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Requests\User;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,7 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Asumsikan otorisasi ditangani oleh middleware
+        return true;
     }
 
     /**
@@ -25,20 +25,8 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                // Pastikan email unik, tapi abaikan email pengguna yang sedang diedit.
-                Rule::unique('users')->ignore($this->user),
-            ],
-            // Password bersifat opsional saat update
-            'password' => [
-                'nullable',
-                'confirmed',
-                Password::min(8)
-            ],
+            'email' => ['required','string','email','max:255',Rule::unique('users')->ignore($this->user)],
+            'password' => ['nullable','confirmed',Password::min(8)],
             'roles' => 'required|array',
             'roles.*' => 'exists:roles,id',
         ];
