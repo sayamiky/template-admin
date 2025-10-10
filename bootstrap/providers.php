@@ -5,5 +5,6 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\VoltServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
-    Spatie\Permission\PermissionServiceProvider::class
+    Spatie\Permission\PermissionServiceProvider::class,
+    Yajra\DataTables\DataTablesServiceProvider::class
 ];

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Admin\Controllers\UserController;
 use App\Admin\Controllers\RoleController;
 use App\Admin\Controllers\PermissionController;
+use App\Admin\Controllers\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,8 @@ Route::middleware(['auth', 'role:admin'])
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Users, Roles, Permissions (tanpa 'show' agar aman)
+    // Users, Roles, Permissions (tanpa 'show' agar aman)
+        Route::resource('menus', MenuController::class)->except(['show']);
         Route::resource('users', UserController::class)->except(['show']);
         Route::resource('roles', RoleController::class)->except(['show']);
         Route::resource('permissions', PermissionController::class)->except(['show']);
