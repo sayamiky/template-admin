@@ -9,7 +9,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <meta name="description" content="SIM Instansi Pemerintah" />
+    <meta name="description" content="SIM Diskominfo" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @include('layouts.sections.styles')
 </head>
@@ -30,7 +30,8 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        {{ $slot }}
+                        @yield('content')
+
                     </div>
                     <!-- / Content -->
 
@@ -57,4 +58,3 @@
 </body>
 
 </html>
-

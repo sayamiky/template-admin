@@ -3,8 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UserRepository
 {
@@ -13,7 +11,19 @@ class UserRepository
      */
     public function getAllUsers()
     {
-        return User::all();
+        return User::latest()->get();
+    }
+
+    /**
+     * [BARU] Mengambil semua user dengan relasi roles-nya.
+     * Menggunakan with('roles') adalah best practice untuk Eager Loading,
+     * ini mencegah N+1 problem saat mengambil relasi.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllWithRoles()
+    {
+        return User::with('roles')->latest();
     }
 
     /**
@@ -44,22 +54,11 @@ class UserRepository
      *
      * @param User $user
      * @param array $data
-     * @return User
+     * @return bool
      */
-    public function updateUser(User $user, array $data): User
+    public function updateUser(User $user, array $data): bool
     {
-        $user->fill([
-            'name' => $data['name'],
-            'email' => $data['email'],
-        ]);
-
-        if (!empty($data['password'])) {
-            $user->password = Hash::make($data['password']);
-        }
-
-        $user->save();
-
-        return $user;
+        return $user->update($data);
     }
 
     /**
@@ -71,13 +70,5 @@ class UserRepository
     public function deleteUser(User $user): ?bool
     {
         return $user->delete();
-    }
-
-    public function syncRoles(User $user, array $roles): void
-    {
-        if (!empty($roles)) {
-            $roleNames = Role::whereIn('id', $roles)->pluck('name')->toArray();
-            $user->syncRoles($roleNames);
-        }
     }
 }

@@ -9,23 +9,30 @@ use Illuminate\Support\Facades\Validator;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
+use App\Services\PermissionService;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
     protected $roleService;
+    protected $permissionService;
 
-    public function __construct(RoleService $roleService)
+    public function __construct(RoleService $roleService, PermissionService $permissionService)
     {
         $this->roleService = $roleService;
+        $this->permissionService = $permissionService;
     }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = $this->roleService->listRoles();
-        return view('admin.roles.index', compact('roles'));
+        if ($request->ajax()) {
+            return $this->roleService->getDataTable();
+        }
+
+        return view('admin.roles.index');
     }
 
     /**
@@ -115,7 +122,7 @@ class RoleController extends Controller
         try {
             $this->roleService->updateRole($role->id, $validator->validated());
 
-            return redirect()->route('roles.index')
+            return redirect()->route('admin.roles.index')
                 ->with('success', 'Role updated successfully.');
         } catch (Exception $e) {
             Log::error('Error updating role: ' . $e->getMessage());
@@ -127,15 +134,8 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
-        try {
-            $this->roleService->deleteRole($role->id);
+        $this->roleService->deleteRole($role);
 
-            return redirect()->route('roles.index')
-                ->with('success', 'Role deleted successfully.');
-        } catch (Exception $e) {
-            Log::error('Error deleting role: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'An error occurred while deleting the role.');
-        }
+        return response()->json(['success' => 'Role berhasil dihapus.']);
     }
 }

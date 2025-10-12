@@ -16,10 +16,12 @@ class MenuController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $menus = $this->service->getTopMenus();
-        return view('admin.menu.index', compact('menus'));
+        if ($request->ajax()) {
+            return $this->service->getDataTable();
+        }
+        return view('admin.menu.index');
     }
 
     public function create()
@@ -66,7 +68,11 @@ class MenuController extends Controller
 
     public function destroy(Menu $menu)
     {
-        $this->service->deleteMenu($menu);
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil dihapus.');
+        try {
+            $this->service->deleteMenu($menu);
+            return response()->json(['success' => 'Menu berhasil dihapus.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal menghapus data.'], 500);
+        }
     }
 }

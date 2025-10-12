@@ -1,12 +1,18 @@
-<x-admin-layout>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Edit Role: {{ $role->name }}</h5>
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('roles.update', $role->id) }}" method="POST">
+@extends('layouts.admin')
+
+@section('title', 'Edit Role')
+
+@section('content')
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Manajemen / Role /</span> Edit
+</h4>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mb-4">
+      <h5 class="card-header">Formulir Edit Role</h5>
+      <div class="card-body">
+                    <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -68,27 +74,41 @@
                         {{-- Tombol Aksi --}}
                         <div class="col-12 mt-4">
                             <button type="submit" class="btn btn-primary me-sm-3 me-1">Simpan Perubahan</button>
-                            <a href="{{ route('roles.index') }}" class="btn btn-label-secondary">Batal</a>
+                            <a href="{{ route('admin.roles.index') }}" class="btn btn-label-secondary">Batal</a>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
     </div>
+  </div>
+</div>
+@endsection
 
-    @push('scripts')
-    {{-- Script untuk fungsionalitas "Pilih Semua" --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const selectAll = document.getElementById('selectAll');
-            const checkboxes = document.querySelectorAll('.permission-checkbox');
+@push('scripts')
+{{-- Skrip untuk fungsionalitas 'Pilih Semua' --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const permissionCheckboxes = document.querySelectorAll('.permission-checkbox');
 
-            selectAll.addEventListener('change', function(e) {
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = e.target.checked;
-                });
-            });
+    selectAllCheckbox.addEventListener('change', function () {
+        permissionCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
         });
-    </script>
-    @endpush
-</x-admin-layout>
+    });
+
+    permissionCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Jika ada satu permission yang tidak dicentang, maka 'Pilih Semua' juga tidak dicentang
+            if (!this.checked) {
+                selectAllCheckbox.checked = false;
+            }
+            // Cek apakah semua permission sudah dicentang
+            else {
+                const allChecked = Array.from(permissionCheckboxes).every(c => c.checked);
+                selectAllCheckbox.checked = allChecked;
+            }
+        });
+    });
+});
+</script>
+@endpush
+

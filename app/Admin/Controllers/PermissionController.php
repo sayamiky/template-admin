@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -15,10 +16,12 @@ class PermissionController extends Controller
         $this->permissionService = $permissionService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = $this->permissionService->listPermissions();
-        return view('admin.permissions.index', compact('permissions'));
+        if ($request->ajax()) {
+            return $this->permissionService->getDataTable();
+        }
+        return view('admin.permissions.index');
     }
 
     public function create()
@@ -34,7 +37,7 @@ class PermissionController extends Controller
 
         $this->permissionService->createPermission($request->only('name'));
 
-        return redirect()->route('permissions.index')->with('success', 'Permission created successfully.');
+        return redirect()->route('admin.permissions.index')->with('success', 'Permission created successfully.');
     }
 
     public function edit($id)
@@ -51,12 +54,14 @@ class PermissionController extends Controller
 
         $this->permissionService->updatePermission($id, $request->only('name'));
 
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully.');
+        
+        return response()->json(['success' => 'Permission berhasil diupdate.']);
     }
 
     public function destroy($id)
     {
         $this->permissionService->deletePermission($id);
-        return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully.');
+        
+        return response()->json(['success' => 'Permission berhasil dihapus.']);
     }
 }

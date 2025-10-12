@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Repositories\RoleRepository;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\Facades\DataTables;
 
 class RoleService
 {
@@ -18,6 +19,32 @@ class RoleService
     public function getAllRoles()
     {
         return $this->roleRepo->getAllRoles();
+    }
+
+    public function getDataTable()
+    {
+        $data = $this->roleRepo->getAllRoles();
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $editUrl = route('admin.roles.edit', $row->id);
+                $deleteUrl = route('admin.roles.destroy', $row->id);
+                $editBtn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary"><i class="ri-edit-line"></i></a>';
+
+                // Tombol Hapus dengan atribut untuk memicu modal
+                $deleteBtn = '<button class="btn btn-sm btn-danger delete-btn" 
+                                    data-url="' . $deleteUrl . '" 
+                                    data-name="' . htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8') . '"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deleteConfirmationModal">
+                                    <i class="ri-delete-bin-line"></i>
+                              </button>';
+
+                return $editBtn . ' ' . $deleteBtn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     public function listRoles()
@@ -52,8 +79,9 @@ class RoleService
         });
     }
 
-    public function deleteRole($roleId)
+    public function deleteRole(Role $role)
     {
-        return $this->roleRepo->deleteRole($roleId);
+        // Teruskan objek $role, bukan ID
+        return $this->roleRepo->deleteRole($role);
     }
 }
