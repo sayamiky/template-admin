@@ -13,6 +13,7 @@ class Menu extends Model
         'order',
         'is_active',
         'parent_id',
+        'permission_name'
     ];
 
     public function parent()

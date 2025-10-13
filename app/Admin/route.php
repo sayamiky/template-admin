@@ -58,4 +58,7 @@ Route::middleware(['auth', 'role:admin'])
 Route::middleware(['auth', 'role:admin|operator'])
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.shared');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     });
