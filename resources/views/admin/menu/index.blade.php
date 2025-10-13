@@ -30,7 +30,6 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Menu</th>
-                        <th>Parent</th>
                         <th>Route</th>
                         <th class="text-center">Urutan</th>
                         <th class="text-center">Status</th>
@@ -40,30 +39,31 @@
                 <tbody class="table-border-bottom-0">
                     @forelse ($menus as $parentMenu)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        {{-- Kolom Nama Menu dengan struktur bersarang --}}
-                        <td>
+                        {{-- Kolom No, Parent, Route, Urutan, Status, dan Aksi hanya untuk PARENT --}}
+                        <td class="align-top">{{ $loop->iteration }}</td>
+                        <td class="align-top">
+                            {{-- Tampilkan Nama Parent --}}
                             <div class="d-flex align-items-center">
-                                <i class="{{ $parentMenu->icon }} me-3"></i>
+                                <i class="{{ $parentMenu->icon }} me-3 fs-4"></i>
                                 <strong>{{ $parentMenu->name }}</strong>
                             </div>
 
-                            {{-- Daftar untuk children --}}
+                            {{-- Jika ada CHILD, tampilkan sebagai list di bawah parent --}}
                             @if ($parentMenu->children->isNotEmpty())
                             <ul class="list-unstyled mt-2 ps-4 mb-0">
                                 @foreach ($parentMenu->children->sortBy('order') as $childMenu)
-                                <li class="d-flex justify-content-between align-items-center py-1 border-top">
-                                    {{-- Nama child --}}
+                                <li class="d-flex justify-content-between align-items-center py-2 border-top">
+                                    {{-- Detail Child (Nama & Ikon) --}}
                                     <div class="d-flex align-items-center">
                                         <i class="{{ $childMenu->icon }} me-3"></i>
                                         <span>{{ $childMenu->name }}</span>
                                     </div>
-                                    {{-- Tombol aksi untuk child --}}
+                                    {{-- Tombol Aksi KHUSUS untuk CHILD --}}
                                     <div class="d-inline-flex">
-                                        <a href="{{ route('admin.menus.edit', $childMenu->id) }}" class="btn btn-sm btn-primary me-1">
-                                            <i class="ri-edit-line"></i>
+                                        <a href="{{ route('admin.menus.edit', $childMenu->id) }}" class="btn btn-sm btn-info me-1">
+                                            <i class="ri-pencil-line"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-danger"
+                                        <button type="button" class="btn btn-sm btn-danger delete-btn"
                                             data-url="{{ route('admin.menus.destroy', $childMenu->id) }}" data-bs-toggle="modal"
                                             data-bs-target="#deleteConfirmationModal">
                                             <i class="ri-delete-bin-line"></i>
@@ -74,27 +74,22 @@
                             </ul>
                             @endif
                         </td>
-                        {{-- Kolom Parent untuk baris parent --}}
-                        <td>-</td>
-                        {{-- Kolom Route untuk baris parent --}}
-                        <td>{{ $parentMenu->route ?? '-' }}</td>
-                        {{-- Kolom Urutan untuk baris parent --}}
-                        <td class="text-center">{{ $parentMenu->order }}</td>
-                        {{-- Kolom Status untuk baris parent --}}
-                        <td class="text-center">
+                        <td class="align-top">{{ $parentMenu->route ?? '-' }}</td>
+                        <td class="text-center align-top">{{ $parentMenu->order }}</td>
+                        <td class="text-center align-top">
                             @if ($parentMenu->is_active)
                             <span class="badge bg-label-success">Aktif</span>
                             @else
                             <span class="badge bg-label-danger">Tidak Aktif</span>
                             @endif
                         </td>
-                        {{-- Kolom Aksi untuk baris parent --}}
-                        <td class="text-center">
+                        <td class="text-center align-top">
+                            {{-- Tombol Aksi KHUSUS untuk PARENT --}}
                             <div class="d-flex justify-content-center">
-                                <a href="{{ route('admin.menus.edit', $parentMenu->id) }}" class="btn btn-sm btn-primary me-2">
-                                    <i class="ri-edit-line"></i>
+                                <a href="{{ route('admin.menus.edit', $parentMenu->id) }}" class="btn btn-sm btn-info me-2">
+                                    <i class="ri-pencil-line"></i>
                                 </a>
-                                <button type="button" class="btn btn-sm btn-danger"
+                                <button type="button" class="btn btn-sm btn-danger delete-btn"
                                     data-url="{{ route('admin.menus.destroy', $parentMenu->id) }}" data-bs-toggle="modal"
                                     data-bs-target="#deleteConfirmationModal">
                                     <i class="ri-delete-bin-line"></i>
@@ -156,24 +151,12 @@
             }
         });
 
-        // SweetAlert untuk konfirmasi penghapusan
-        $('.form-delete').on('submit', function(e) {
-            e.preventDefault();
-            var form = this;
-            Swal.fire({
-                title: 'Anda Yakin?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            })
+        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var url = button.data('url');
+            var form = $('#deleteForm');
+
+            form.attr('action', url);
         });
     });
 </script>

@@ -70,11 +70,7 @@ class MenuController extends Controller
 
     public function destroy(Menu $menu)
     {
-        try {
-            $this->service->deleteMenu($menu);
-            return response()->json(['success' => 'Menu berhasil dihapus.']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Gagal menghapus data.'], 500);
-        }
+        $this->service->deleteMenu($menu);
+        return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil dihapus.');
     }
 }
