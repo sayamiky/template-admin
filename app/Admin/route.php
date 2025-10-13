@@ -1,36 +1,41 @@
 <?php
 
-use App\Admin\Controllers\MenuController;
-use App\Admin\Controllers\PermissionController;
-use App\Admin\Controllers\RoleController;
-use App\Admin\Controllers\UserController;
-use App\Http\Controllers\DashboardController;
-use App\Models\Menu;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Admin\Controllers\UserController;
+use App\Admin\Controllers\RoleController;
+use App\Admin\Controllers\PermissionController;
+use App\Admin\Controllers\MenuController;
 
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('menus', MenuController::class);
-});
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+| Semua route admin berada di bawah prefix "admin" dan memiliki nama "admin."
+| Middleware 'auth' dan 'role:admin' memastikan hanya admin yang bisa mengakses.
+*/
 
-Route::middleware(['auth', 'role:admin|operator'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
-});
+        // Users, Roles, Permissions (tanpa 'show' agar aman)
+        Route::resource('menus', MenuController::class)->except(['show']);
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::resource('roles', RoleController::class)->except(['show']);
+        Route::resource('permissions', PermissionController::class)->except(['show']);
+    });
 
-Route::middleware(['auth'])->prefix('dynamic')->group(function () {
-    // Fetch all menus with a non-null route
-    $menus = Menu::whereNotNull('route')->get();
-
-    foreach ($menus as $menu) {
-        if (!Route::has($menu->route)) {
-            Route::get($menu->route, function () use ($menu) {
-                return view('admin.dynamic.' . $menu->name, ['menu' => $menu]);
-            })->name(str_replace('/', '.', trim($menu->route, '/')));
-        }
-    }
-});
+/*
+|--------------------------------------------------------------------------
+| Shared Routes (Admin & Operator)
+|--------------------------------------------------------------------------
+| Bisa diakses oleh admin maupun operator.
+*/
+Route::middleware(['auth', 'role:admin|operator'])
+    ->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.shared');
+    });
