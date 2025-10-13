@@ -17,29 +17,9 @@ class MenuService
         $this->repository = $repository;
     }
 
-    public function getDataTable()
+    public function getMenusForDisplay()
     {
-        $data = $this->repository->getAll();
-
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                $editUrl = route('admin.menus.edit', $row->id);
-                $deleteUrl = route('admin.menus.destroy', $row->id);
-                $editBtn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary"><i class="ri-edit-line"></i></a>';
-
-                $deleteBtn = '<button class="btn btn-sm btn-danger delete-btn" 
-                                    data-url="' . $deleteUrl . '" 
-                                    data-name="' . htmlspecialchars($row->name, ENT_QUOTES, 'UTF-8') . '"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#deleteConfirmationModal">
-                                    <i class="ri-delete-bin-line"></i>
-                              </button>';
-
-                return $editBtn . ' ' . $deleteBtn;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        return $this->repository->getAllMenusOrderedHierarchically();
     }
 
     public function getAllMenus()

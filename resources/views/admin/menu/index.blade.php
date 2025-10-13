@@ -18,27 +18,95 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Daftar Menu</h5>
+        <h5 class="mb-0">Manajemen Menu</h5>
         <a href="{{ route('admin.menus.create') }}" class="btn btn-primary">
-            <i class="ri-add-line me-1"></i> Tambah Menu
+            <i class="ri-add-line me-2"></i> Tambah Menu
         </a>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover" id="menus-table">
+        <div class="table-responsive text-nowrap">
+            <table id="menu-table" class="table">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Menu</th>
-                        <th>URL</th>
-                        <th>Icon</th>
-                        <th>Order</th>
                         <th>Parent</th>
-                        <th>Aksi</th>
+                        <th>Route</th>
+                        <th class="text-center">Urutan</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {{-- Body tabel akan diisi oleh DataTables --}}
+                <tbody class="table-border-bottom-0">
+                    @forelse ($menus as $parentMenu)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        {{-- Kolom Nama Menu dengan struktur bersarang --}}
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="{{ $parentMenu->icon }} me-3"></i>
+                                <strong>{{ $parentMenu->name }}</strong>
+                            </div>
+
+                            {{-- Daftar untuk children --}}
+                            @if ($parentMenu->children->isNotEmpty())
+                            <ul class="list-unstyled mt-2 ps-4 mb-0">
+                                @foreach ($parentMenu->children->sortBy('order') as $childMenu)
+                                <li class="d-flex justify-content-between align-items-center py-1 border-top">
+                                    {{-- Nama child --}}
+                                    <div class="d-flex align-items-center">
+                                        <i class="{{ $childMenu->icon }} me-3"></i>
+                                        <span>{{ $childMenu->name }}</span>
+                                    </div>
+                                    {{-- Tombol aksi untuk child --}}
+                                    <div class="d-inline-flex">
+                                        <a href="{{ route('admin.menus.edit', $childMenu->id) }}" class="btn btn-sm btn-primary me-1">
+                                            <i class="ri-edit-line"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            data-url="{{ route('admin.menus.destroy', $childMenu->id) }}" data-bs-toggle="modal"
+                                            data-bs-target="#deleteConfirmationModal">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                                @endforeach
+                            </ul>
+                            @endif
+                        </td>
+                        {{-- Kolom Parent untuk baris parent --}}
+                        <td>-</td>
+                        {{-- Kolom Route untuk baris parent --}}
+                        <td>{{ $parentMenu->route ?? '-' }}</td>
+                        {{-- Kolom Urutan untuk baris parent --}}
+                        <td class="text-center">{{ $parentMenu->order }}</td>
+                        {{-- Kolom Status untuk baris parent --}}
+                        <td class="text-center">
+                            @if ($parentMenu->is_active)
+                            <span class="badge bg-label-success">Aktif</span>
+                            @else
+                            <span class="badge bg-label-danger">Tidak Aktif</span>
+                            @endif
+                        </td>
+                        {{-- Kolom Aksi untuk baris parent --}}
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ route('admin.menus.edit', $parentMenu->id) }}" class="btn btn-sm btn-primary me-2">
+                                    <i class="ri-edit-line"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger"
+                                    data-url="{{ route('admin.menus.destroy', $parentMenu->id) }}" data-bs-toggle="modal"
+                                    data-bs-target="#deleteConfirmationModal">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="text-center">Belum ada data menu.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -72,97 +140,40 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        // Inisialisasi DataTable
-        var table = $('#menus-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{ route('admin.menus.index') }}',
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'name',
-                    name: 'name'
-                },
-                {
-                    data: 'route',
-                    name: 'route'
-                },
-                {
-                    data: 'icon',
-                    name: 'icon'
-                },
-                {
-                    data: 'order',
-                    name: 'order'
-                },
-                {
-                    data: 'parent_id',
-                    name: 'parent_id'
-                }, // Asumsi nama kolom di db adalah parent_id
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
-        });
-
-        // Event handler untuk menampilkan modal konfirmasi hapus
-        $('#menus-table').on('click', '.delete-btn', function() {
-            var menuName = $(this).data('name');
-            var deleteUrl = $(this).data('url');
-
-            $('#menu-name-to-delete').text(menuName);
-            $('#deleteForm').attr('action', deleteUrl);
-        });
-
-        // Event handler untuk submit form hapus via AJAX
-        $('#deleteForm').on('submit', function(e) {
-            e.preventDefault();
-            var form = $(this);
-            var url = form.attr('action');
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    _method: 'DELETE'
-                },
-                success: function(response) {
-                    $('#deleteConfirmationModal').modal('hide');
-                    table.ajax.reload(); // Muat ulang data tabel
-
-                    // Tampilkan notifikasi sukses
-                    var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                        response.success +
-                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                        '</div>';
-                    $('#notification-alert-container').html(alertHtml);
-
-                    // Hilangkan notifikasi setelah 5 detik
-                    setTimeout(function() {
-                        $('.alert').fadeOut('slow');
-                    }, 5000);
-                },
-                error: function(xhr) {
-                    $('#deleteConfirmationModal').modal('hide');
-                    console.error('Gagal menghapus data.', xhr.responseJSON);
-
-                    // Tampilkan notifikasi error (opsional)
-                    var errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Terjadi kesalahan.';
-                    var alertHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                        errorMsg +
-                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                        '</div>';
-                    $('#notification-alert-container').html(alertHtml);
+        // Inisialisasi DataTables pada tabel HTML
+        $('#menu-table').DataTable({
+            "ordering": false, // Nonaktifkan sorting bawaan karena struktur kompleks
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Pertama",
+                    "last": "Terakhir",
+                    "next": "Selanjutnya",
+                    "previous": "Sebelumnya"
                 }
-            });
+            }
+        });
+
+        // SweetAlert untuk konfirmasi penghapusan
+        $('.form-delete').on('submit', function(e) {
+            e.preventDefault();
+            var form = this;
+            Swal.fire({
+                title: 'Anda Yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            })
         });
     });
 </script>

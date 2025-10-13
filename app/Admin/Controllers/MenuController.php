@@ -16,17 +16,16 @@ class MenuController extends Controller
         $this->service = $service;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->ajax()) {
-            return $this->service->getDataTable();
-        }
-        return view('admin.menu.index');
+        // Panggil metode baru dari service untuk mendapatkan daftar menu yang sudah diurutkan secara hierarkis
+        $menus = $this->service->getMenusForDisplay();
+        return view('admin.menu.index', compact('menus'));
     }
 
     public function create()
     {
-        $parents = $this->service->getTopMenus();
+        $parents = Menu::whereNull('parent_id')->where('is_active', 1)->get();
         return view('admin.menu.create', compact('parents'));
     }
 
@@ -47,7 +46,10 @@ class MenuController extends Controller
 
     public function edit(Menu $menu)
     {
-        $parents = $this->service->getTopMenus();
+        $parents = Menu::whereNull('parent_id')
+            ->where('id', '!=', $menu->id) // Mencegah sebuah menu menjadi parent dari dirinya sendiri
+            ->where('is_active', 1)
+            ->get();
         return view('admin.menu.edit', compact('menu', 'parents'));
     }
 
