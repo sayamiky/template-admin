@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use App\Repositories\UserRepository;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
@@ -20,31 +21,40 @@ class UserService
         return $this->userRepository->getAllUsers();
     }
 
-    public function createUser(array $data)
+    public function createUser(array $validatedData): User
     {
-        $data['password'] = Hash::make($data['password']);
-        $user = $this->userRepository->createUser($data);
-        if (isset($data['roles'])) {
-            $user->assignRole($data['roles']);
-        }
+        $userData = [
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+        ];
+
+        $user = $this->userRepository->createUser($userData);
+
+        $roles = Role::whereIn('id', $validatedData['roles'])->get();
+        $user->assignRole($roles);
+
         return $user;
     }
 
-    public function updateUser(User $user, array $data)
+    /**
+     * Memperbarui data pengguna.
+     *
+     * @param User $user
+     * @param array $validatedData
+     * @return User
+     */
+    public function updateUser(User $user, array $validatedData): User
     {
-        if (!empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        } else {
-            unset($data['password']);
-        }
+        return DB::transaction(function () use ($user, $validatedData) {
+            $updatedUser = $this->userRepository->updateUser($user, $validatedData);
+            
+            if (isset($validatedData['roles'])) {
+                $this->userRepository->syncRoles($updatedUser, $validatedData['roles']);
+            }
 
-        $this->userRepository->updateUser($user, $data);
-
-        if (isset($data['roles'])) {
-            $user->syncRoles($data['roles']);
-        } else {
-            $user->syncRoles([]);
-        }
+            return $updatedUser;
+        });
     }
 
     public function deleteUser(User $user)

@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserRepository
 {
@@ -54,11 +56,22 @@ class UserRepository
      *
      * @param User $user
      * @param array $data
-     * @return bool
+     * @return User
      */
-    public function updateUser(User $user, array $data): bool
+    public function updateUser(User $user, array $data): User
     {
-        return $user->update($data);
+        $user->fill([
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ]);
+
+        if (!empty($data['password'])) {
+            $user->password = Hash::make($data['password']);
+        }
+
+        $user->save();
+
+        return $user;
     }
 
     /**
@@ -70,5 +83,13 @@ class UserRepository
     public function deleteUser(User $user): ?bool
     {
         return $user->delete();
+    }
+
+    public function syncRoles(User $user, array $roles): void
+    {
+        if (!empty($roles)) {
+            $roleNames = Role::whereIn('id', $roles)->pluck('name')->toArray();
+            $user->syncRoles($roleNames);
+        }
     }
 }

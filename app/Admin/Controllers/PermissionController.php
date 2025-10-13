@@ -54,8 +54,7 @@ class PermissionController extends Controller
 
         $this->permissionService->updatePermission($id, $request->only('name'));
 
-        
-        return response()->json(['success' => 'Permission berhasil diupdate.']);
+        return redirect()->route('admin.permissions.index')->with('success', 'Permission edit successfully.');
     }
 
     public function destroy($id)

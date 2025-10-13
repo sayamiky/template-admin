@@ -40,9 +40,9 @@ class MenuController extends Controller
             'order' => 'required|integer',
             'is_active' => 'boolean',
         ]);
-
+        
         $this->service->createMenu($validated);
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil dibuat.');
+        return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil dibuat.');
     }
 
     public function edit(Menu $menu)
@@ -63,7 +63,7 @@ class MenuController extends Controller
         ]);
 
         $this->service->updateMenu($menu, $validated);
-        return redirect()->route('menus.index')->with('success', 'Menu berhasil diperbarui.');
+        return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil diperbarui.');
     }
 
     public function destroy(Menu $menu)

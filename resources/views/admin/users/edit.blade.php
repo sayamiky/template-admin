@@ -57,7 +57,7 @@
                                 <div class="form-check">
                                     {{-- 1. Value diubah ke $role->name --}}
                                     {{-- 2. Pengecekan 'checked' menggunakan $role->name --}}
-                                    <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->name }}" id="role-{{ $role->id }}" @if(in_array($role->name, $userRoles)) checked @endif>
+                                    <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" id="role-{{ $role->id }}" @if(in_array($role->name, $userRoles)) checked @endif>
                                     <label class="form-check-label" for="role-{{ $role->id }}">
                                         {{ $role->name }}
                                     </label>

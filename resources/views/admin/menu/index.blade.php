@@ -32,6 +32,7 @@
                         <th>Nama Menu</th>
                         <th>URL</th>
                         <th>Icon</th>
+                        <th>Order</th>
                         <th>Parent</th>
                         <th>Aksi</th>
                     </tr>
@@ -93,6 +94,10 @@
                 {
                     data: 'icon',
                     name: 'icon'
+                },
+                {
+                    data: 'order',
+                    name: 'order'
                 },
                 {
                     data: 'parent_id',

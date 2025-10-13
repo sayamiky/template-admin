@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
 use App\Admin\Requests\User\StoreUserRequest;
 use App\Admin\Requests\User\UpdateUserRequest;
+use App\Http\Requests\User\StoreUserRequest as UserStoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest as UserUpdateUserRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -54,7 +56,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(UserStoreUserRequest $request)
     {
         $this->userService->createUser($request->validated());
 
@@ -75,12 +77,19 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
-        $this->userService->updateUser($user, $request->validated());
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'roles' => 'sometimes|array',
+        ]);
+
+        $this->userService->updateUser($user, $validatedData);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Pengguna berhasil diperbarui.');
+            ->with('success', 'User updated successfully.');
     }
 
     /**
