@@ -61,7 +61,7 @@ class RoleController extends Controller
         try {
             $this->roleService->createRole($validator->validated());
 
-            return redirect()->route('roles.index')
+            return redirect()->route('admin.roles.index')
                 ->with('success', 'Role created successfully.');
         } catch (Exception $e) {
             Log::error('Error creating role: ' . $e->getMessage());
