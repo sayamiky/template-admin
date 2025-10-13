@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 class Menu extends Model
 {
+    use HasFactory, HasRoles;
+
     protected $fillable = [
         'name',
+        'parent_id',
         'route',
         'icon',
         'order',
@@ -16,23 +21,22 @@ class Menu extends Model
         'permission_name'
     ];
 
+    /**
+     * Get the parent for the menu.
+     */
     public function parent()
     {
         return $this->belongsTo(Menu::class, 'parent_id');
     }
 
+    /**
+     * Get the children for the menu.
+     */
     public function children()
     {
-        return $this->hasMany(Menu::class, 'parent_id')->orderBy('order');
+        // Perbaikan dari error 'Out of Memory':
+        // Pastikan tidak ada ->with('children') di sini untuk menghindari rekursi tak terbatas.
+        return $this->hasMany(Menu::class, 'parent_id')->orderBy('order', 'asc');
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(\Spatie\Permission\Models\Role::class, 'menu_role', 'menu_id', 'role_id');
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
 }
