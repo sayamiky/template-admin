@@ -5,10 +5,10 @@
         <a href="{{ url('/') }}" class="app-brand-link">
 
             <span class="app-brand-logo demo">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Lambang_Kabupaten_Badung.png"
+                <img src="https://diskominfo.badungkab.go.id/badung.png"
                     alt="Logo Kabupaten Badung" style="height: 40px;">
             </span>
-            <span class="app-brand-text demo menu-text fw-bold">DISKOMINFO</span>
+            <span class="app-brand-text demo menu-text fw-bold mx-4">DISKOMINFO</span>
         </a>
     </div>
 

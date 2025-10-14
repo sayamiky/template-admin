@@ -13,7 +13,7 @@
 @endif
 
 <!-- ! Toggle untuk Mobile -->
-<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none mx-5">
     <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
         <i class="ri-menu-fill ri-22px"></i>
     </a>
@@ -34,7 +34,7 @@
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow px-7" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
-                    <img src="https://placehold.co/40x40/7367F0/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}" alt
+                    <img src="https://placehold.co/40x40/f2163e/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}" alt
                         class="w-px-40 h-auto rounded-circle">
                 </div>
             </a>
@@ -44,7 +44,7 @@
                         <div class="d-flex">
                             <div class="flex-shrink-0 me-3">
                                 <div class="avatar avatar-online">
-                                    <img src="https://placehold.co/40x40/7367F0/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}"
+                                    <img src="https://placehold.co/40x40/f2163e/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}"
                                         alt class="w-px-40 h-auto rounded-circle">
                                 </div>
                             </div>

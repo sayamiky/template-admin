@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://badungkab.go.id/badung.png" type="image/x-icon">
 
     <title>Diskominfo Kabupaten Badung</title>
 
@@ -76,7 +77,7 @@
                         </div>
                         <div class="hidden lg:block">
                             <!-- Ganti dengan gambar yang relevan -->
-                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop"
+                            <img src="https://assets.badungkab.go.id/webp/1920x1080_dengan_latar_foto_bupati_dan_wakil_bupati_di_tengah.webp"
                                 alt="Government Technology" class="rounded-lg shadow-xl">
                         </div>
                     </div>

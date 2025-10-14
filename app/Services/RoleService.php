@@ -30,7 +30,7 @@ class RoleService
             ->addColumn('action', function ($row) {
                 $editUrl = route('admin.roles.edit', $row->id);
                 $deleteUrl = route('admin.roles.destroy', $row->id);
-                $editBtn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary"><i class="ri-edit-line"></i></a>';
+                $editBtn = '<a href="' . $editUrl . '" class="btn btn-sm btn-warning"><i class="ri-edit-line"></i></a>';
 
                 // Tombol Hapus dengan atribut untuk memicu modal
                 $deleteBtn = '<button class="btn btn-sm btn-danger delete-btn" 

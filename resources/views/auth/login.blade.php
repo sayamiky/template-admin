@@ -7,7 +7,7 @@
                 <a href="{{ url('/') }}" class="app-brand-link gap-2">
                     <span class="app-brand-logo demo">
                         {{-- LOGO DIUBAH DI SINI --}}
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Lambang_Kabupaten_Badung.png"
+                        <img src="https://badungkab.go.id/badung.png"
                             alt="Logo Kabupaten Badung" style="height: 70px;">
                     </span>
                 </a>
@@ -16,13 +16,13 @@
 
             <!-- Menampilkan pesan error validasi umum -->
             @if ($errors->any())
-                <div class="alert alert-danger pb-0">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="alert alert-danger pb-0">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
 
@@ -40,9 +40,9 @@
                     <div class="d-flex justify-content-between">
                         <label class="form-label" for="password">Password</label>
                         @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}">
-                                <small>Lupa Password?</small>
-                            </a>
+                        <a href="{{ route('password.request') }}">
+                            <small>Lupa Password?</small>
+                        </a>
                         @endif
                     </div>
                     <div class="input-group input-group-merge">
@@ -77,4 +77,3 @@
     </div>
     <!-- /Card -->
 </x-blank-layout>
-
