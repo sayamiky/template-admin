@@ -13,7 +13,7 @@
 @endif
 
 <!-- ! Toggle untuk Mobile -->
-<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none mx-5">
     <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
         <i class="ri-menu-fill ri-22px"></i>
     </a>
