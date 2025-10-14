@@ -188,7 +188,7 @@
                 <li class="menu-item {{ $isOpen ? 'open' : '' }}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons {{ $menu->icon }}"></i>
-                        <div>{{ $menu->name }}</div>
+                        <div>{{ ucfirst($menu->name) }}</div>
                     </a>
                     <ul class="menu-sub">
                         @foreach ($filteredChildren as $child)
@@ -198,7 +198,7 @@
                             @if (Route::has($childRoute))
                                 <li class="menu-item {{ request()->routeIs($childRoute) ? 'active' : '' }}">
                                     <a href="{{ route($childRoute) }}" class="menu-link">
-                                        <div>{{ $child->name }}</div>
+                                        <div>{{ ucfirst($child->name) }}</div>
                                     </a>
                                 </li>
                             @endif

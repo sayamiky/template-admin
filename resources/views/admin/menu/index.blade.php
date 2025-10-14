@@ -45,7 +45,7 @@
                             {{-- Tampilkan Nama Parent --}}
                             <div class="d-flex align-items-center">
                                 <i class="{{ $parentMenu->icon }} me-3 fs-4"></i>
-                                <strong>{{ $parentMenu->name }}</strong>
+                                <strong>{{ ucfirst($parentMenu->name) }}</strong>
                             </div>
 
                             {{-- Jika ada CHILD, tampilkan sebagai list di bawah parent --}}
@@ -56,7 +56,7 @@
                                     {{-- Detail Child (Nama & Ikon) --}}
                                     <div class="d-flex align-items-center">
                                         <i class="{{ $childMenu->icon }} me-3"></i>
-                                        <span>{{ $childMenu->name }}</span>
+                                        <span>{{ ucfirst($childMenu->name) }}</span>
                                     </div>
                                     {{-- Tombol Aksi KHUSUS untuk CHILD --}}
                                     <div class="d-inline-flex">
