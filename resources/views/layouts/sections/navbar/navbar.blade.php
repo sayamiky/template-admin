@@ -34,7 +34,7 @@
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow px-7" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
-                    <img src="https://placehold.co/40x40/7367F0/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}" alt
+                    <img src="https://placehold.co/40x40/f2163e/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}" alt
                         class="w-px-40 h-auto rounded-circle">
                 </div>
             </a>
@@ -44,7 +44,7 @@
                         <div class="d-flex">
                             <div class="flex-shrink-0 me-3">
                                 <div class="avatar avatar-online">
-                                    <img src="https://placehold.co/40x40/7367F0/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}"
+                                    <img src="https://placehold.co/40x40/f2163e/FFFFFF?text={{ substr(Auth::user()->name, 0, 1) }}"
                                         alt class="w-px-40 h-auto rounded-circle">
                                 </div>
                             </div>
