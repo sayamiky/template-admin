@@ -8,6 +8,10 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link rel="icon" type="image/png" href="https://diskominfo.badungkab.go.id/badung.png" />
+    <link rel="shortcut icon" href="https://diskominfo.badungkab.go.id/badung.png" />
+    <link rel="apple-touch-icon" href="https://diskominfo.badungkab.go.id/badung.png" />
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

@@ -7,12 +7,15 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <link rel="shortcut icon" href="https://diskominfo.badungkab.go.id/badung.png" type="image/x-icon">
     <title>{{ config('app.name', 'Laravel') }} - Login</title>
     <meta name="description" content="SIM Instansi Pemerintah" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+    <link rel="icon" type="image/png" href="https://diskominfo.badungkab.go.id/badung.png" />
+    <link rel="shortcut icon" href="https://diskominfo.badungkab.go.id/badung.png" />
+    <link rel="apple-touch-icon" href="https://diskominfo.badungkab.go.id/badung.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,9 +27,9 @@
 
     {{-- Aset dari Vite --}}
     @vite([
-        'resources/assets/vendor/scss/core.scss',
-        'resources/assets/vendor/scss/theme-default.scss',
-        'resources/assets/vendor/scss/pages/page-auth.scss'
+    'resources/assets/vendor/scss/core.scss',
+    'resources/assets/vendor/scss/theme-default.scss',
+    'resources/assets/vendor/scss/pages/page-auth.scss'
     ])
 
     <!-- Helpers -->
@@ -54,4 +57,3 @@
 </body>
 
 </html>
-

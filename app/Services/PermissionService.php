@@ -23,7 +23,7 @@ class PermissionService
             ->addColumn('action', function ($row) {
                 $editUrl = route('admin.permissions.edit', $row->id);
                 $deleteUrl = route('admin.permissions.destroy', $row->id);
-                $editBtn = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary"><i class="ri-edit-line"></i></a>';
+                $editBtn = '<a href="' . $editUrl . '" class="btn btn-sm btn-warning"><i class="ri-edit-line"></i></a>';
 
                 $deleteBtn = '<button class="btn btn-sm btn-danger delete-btn" 
                                     data-url="' . $deleteUrl . '" 

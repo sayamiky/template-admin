@@ -19,7 +19,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Manajemen Menu</h5>
-        <a href="{{ route('admin.menus.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.menus.create') }}" class="btn btn-info">
             <i class="ri-add-line me-2"></i> Tambah Menu
         </a>
     </div>
@@ -60,7 +60,7 @@
                                     </div>
                                     {{-- Tombol Aksi KHUSUS untuk CHILD --}}
                                     <div class="d-inline-flex">
-                                        <a href="{{ route('admin.menus.edit', $childMenu->id) }}" class="btn btn-sm btn-info me-1">
+                                        <a href="{{ route('admin.menus.edit', $childMenu->id) }}" class="btn btn-sm btn-warning me-1">
                                             <i class="ri-pencil-line"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-danger delete-btn"
@@ -86,7 +86,7 @@
                         <td class="text-center align-top">
                             {{-- Tombol Aksi KHUSUS untuk PARENT --}}
                             <div class="d-flex justify-content-center">
-                                <a href="{{ route('admin.menus.edit', $parentMenu->id) }}" class="btn btn-sm btn-info me-2">
+                                <a href="{{ route('admin.menus.edit', $parentMenu->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="ri-pencil-line"></i>
                                 </a>
                                 <button type="button" class="btn btn-sm btn-danger delete-btn"

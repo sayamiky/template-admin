@@ -13,7 +13,7 @@
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="card-title">Daftar Izin Akses (Permissions)</h5>
-                <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary float-end">
+                <a href="{{ route('admin.permissions.create') }}" class="btn btn-info float-end">
                     <i class="ri-add-line me-1"></i> Tambah Izin Akses
                 </a>
             </div>

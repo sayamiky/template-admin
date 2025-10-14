@@ -2,7 +2,7 @@
 <li class="menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
     <a href="{{ route('admin.dashboard') }}" class="menu-link">
         <i class="menu-icon tf-icons ri-home-smile-line"></i>
-        <div>Dasbor</div>
+        <div>Dasboard</div>
     </a>
 </li>
 

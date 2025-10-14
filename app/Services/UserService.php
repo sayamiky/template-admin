@@ -80,7 +80,7 @@ class UserService
                 $editUrl = route('admin.users.edit', $user->id);
                 $deleteUrl = route('admin.users.destroy', $user->id);
 
-                $actionButtons = '<a href="' . $editUrl . '" class="btn btn-sm btn-primary me-1"><i class="ri-edit-line"></i></a>';
+                $actionButtons = '<a href="' . $editUrl . '" class="btn btn-sm btn-warning me-1"><i class="ri-edit-line"></i></a>';
 
                 $actionButtons .= '<button type="button" class="btn btn-sm btn-danger delete-btn" 
                                         data-bs-toggle="modal" 
