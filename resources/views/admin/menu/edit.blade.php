@@ -47,8 +47,17 @@
                             <label for="url" class="form-label">Urutan</label>
                             <input type="text" class="form-control @error('order') is-invalid @enderror" id="order"
                                 name="order" value="{{ old('order', $menu->order) }}" placeholder="cth: 1" />
-                            <div class="form-text">Biarkan kosong jika ini adalah menu parent.</div>
                             @error('order')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="url" class="form-label">Nama Permission</label>
+                            <input type="text" class="form-control @error('permission_name') is-invalid @enderror"
+                                id="permission_name" name="permission_name"
+                                value="{{ old('permission_name', $menu->permission_name) }}" placeholder="cth: menu.view" />
+                            <div class="form-text">Biarkan kosong jika ini adalah menu parent.</div>
+                            @error('permission_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -64,6 +73,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <div class="form-text">Biarkan kosong jika ini adalah menu parent.</div>
                             @error('parent_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

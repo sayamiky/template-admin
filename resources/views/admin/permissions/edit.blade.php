@@ -17,9 +17,11 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Izin Akses (Permission)</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $permission->name) }}" placeholder="Contoh: view_dashboard" required />
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
+                                name="name" value="{{ old('name', $permission->name) }}"
+                                placeholder="Contoh: dashboard.view" required />
                             @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -33,4 +35,3 @@
         </div>
     </div>
 @endsection
-
