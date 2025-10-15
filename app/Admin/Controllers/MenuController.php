@@ -141,9 +141,10 @@ class MenuController extends Controller
             'route' => 'required|string|max:100',
             'parent_id' => 'nullable|exists:menus,id',
             'order' => 'required|integer',
+            'permission_name' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
-        
+
         $this->service->createMenu($validated);
         return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil dibuat.');
     }
@@ -165,6 +166,7 @@ class MenuController extends Controller
             'route' => 'required|string|max:100',
             'parent_id' => 'nullable|exists:menus,id',
             'order' => 'required|integer',
+            'permission_name' => 'nullable|string',
             'is_active' => 'boolean',
         ]);
 
