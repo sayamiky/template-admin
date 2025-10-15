@@ -6,36 +6,36 @@
 
 @section('content')
 <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manajemen /</span> Role
+    <span class="text-muted fw-light">Manajemen /</span> Role
 </h4>
 <div class="row">
     <div class="col-md-12">
-    <div id="notification-alert-container"></div>
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="card-title">Daftar Role</h5>
-            <a href="{{ route('admin.roles.create') }}" class="btn btn-info float-end">
-                <i class="ri-add-line me-1"></i> Tambah Role
-            </a>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover" id="roles-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%">No</th>
-                            <th>Nama Role</th>
-                            <th>Guard</th>
-                            <th style="width: 15%">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- Body tabel akan diisi oleh DataTables --}}
-                    </tbody>
-                </table>
+        <div id="notification-alert-container"></div>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Daftar Role</h5>
+                <a href="{{ route('admin.roles.create') }}" class="btn btn-info float-end">
+                    <i class="ri-add-line me-1"></i> Tambah Role
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="roles-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">No</th>
+                                <th>Nama Role</th>
+                                <th>Guard</th>
+                                <th style="width: 15%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Body tabel akan diisi oleh DataTables --}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </div>
 
@@ -69,7 +69,7 @@
         var table = $('#roles-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('admin.roles.index') }}',
+            ajax: "{{ route('admin.roles.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',

@@ -7,18 +7,22 @@ use App\Models\Menu;
 
 class MenuRepository
 {
+    protected $model;
+
+    public function __construct(Menu $menu)
+    {
+        $this->model = $menu;
+    }
     /**
      * Mengambil semua menu, membangun struktur pohon, lalu meratakannya (flatten)
      * menjadi satu array yang terurut untuk ditampilkan di view.
      *
      * @return array
      */
-    public function getAllMenusOrderedHierarchically()
+    public function getParentMenusWithChildren()
     {
-        return Menu::whereNull('parent_id')
-            ->with(['children' => function ($query) {
-                $query->orderBy('order', 'asc');
-            }])
+        return $this->model->whereNull('parent_id')
+            ->with('children')
             ->orderBy('order', 'asc')
             ->get();
     }

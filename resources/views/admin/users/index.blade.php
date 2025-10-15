@@ -6,44 +6,44 @@
 
 @section('content')
 <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">Manajemen /</span> Pengguna
+    <span class="text-muted fw-light">Manajemen /</span> Pengguna
 </h4>
 <div class="row">
     <div class="col-md-12">
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
+        @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
 
-            <div id="notification-alert-container"></div>
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title">Daftar Pengguna</h5>
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-info float-end">
-                        <i class="ri-add-line me-1"></i> Tambah Pengguna
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="users-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 5%">No</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th style="width: 15%">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- Body tabel akan diisi oleh DataTables --}}
-                            </tbody>
-                        </table>
-                    </div>
+        <div id="notification-alert-container"></div>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Daftar Pengguna</h5>
+                <a href="{{ route('admin.users.create') }}" class="btn btn-info float-end">
+                    <i class="ri-add-line me-1"></i> Tambah Pengguna
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="users-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">No</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th style="width: 15%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Body tabel akan diisi oleh DataTables --}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 
@@ -80,7 +80,7 @@
         var table = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('admin.users.index') }}',
+            ajax: "{{ route('admin.users.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
