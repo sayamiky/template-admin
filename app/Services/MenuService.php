@@ -17,9 +17,9 @@ class MenuService
         $this->repository = $repository;
     }
 
-    public function getMenusForDisplay()
+    public function getParentMenusWithChildren()
     {
-        return $this->repository->getAllMenusOrderedHierarchically();
+        return $this->repository->getParentMenusWithChildren();
     }
 
     public function getAllMenus()

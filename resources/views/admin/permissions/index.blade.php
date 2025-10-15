@@ -8,10 +8,12 @@
 </h4>
 <div class="row">
     <div class="col-md-12">
-        <div id="notification-alert-container"></div>
+        <div id="notification-alert-container">
+            
+        </div>
 
-        <div class="card mb-4">
-            <div class="card-header">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title">Daftar Izin Akses (Permissions)</h5>
                 <a href="{{ route('admin.permissions.create') }}" class="btn btn-info float-end">
                     <i class="ri-add-line me-1"></i> Tambah Izin Akses
@@ -69,7 +71,7 @@
         var table = $('#permissions-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('admin.permissions.index') }}',
+            ajax: "{{ route('admin.permissions.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
