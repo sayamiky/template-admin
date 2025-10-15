@@ -120,6 +120,21 @@
             form.attr('action', url);
             modalMenuName.text(menuName);
         });
+
+
+        let successAlert = $('.alert-success');
+
+        // Periksa apakah elemen alert tersebut ada di halaman
+        if (successAlert.length) {
+            // Setelah 4 detik (4000 milidetik), jalankan fungsi berikut
+            setTimeout(function() {
+                // Lakukan efek fade out selama 0.5 detik (500 milidetik)
+                successAlert.fadeOut(500, function() {
+                    // Setelah efek fade out selesai, hapus elemen alert dari DOM
+                    $(this).remove();
+                });
+            }, 4000); // Waktu tunggu sebelum fade out dimulai
+        }
     });
 </script>
 @endpush

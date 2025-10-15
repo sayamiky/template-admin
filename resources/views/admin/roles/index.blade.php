@@ -10,7 +10,14 @@
 </h4>
 <div class="row">
     <div class="col-md-12">
-        <div id="notification-alert-container"></div>
+        <div id="notification-alert-container">
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+        </div>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title">Daftar Role</h5>
@@ -130,7 +137,7 @@
                         $('.alert').fadeOut('slow', function() {
                             $(this).remove();
                         });
-                    }, 5000);
+                    }, 4000);
 
                     table.ajax.reload();
                 },
@@ -146,6 +153,20 @@
                 }
             });
         });
+
+        let successAlert = $('.alert-success');
+
+        // Periksa apakah elemen alert tersebut ada di halaman
+        if (successAlert.length) {
+            // Setelah 4 detik (4000 milidetik), jalankan fungsi berikut
+            setTimeout(function() {
+                // Lakukan efek fade out selama 0.5 detik (500 milidetik)
+                successAlert.fadeOut(500, function() {
+                    // Setelah efek fade out selesai, hapus elemen alert dari DOM
+                    $(this).remove();
+                });
+            }, 4000); // Waktu tunggu sebelum fade out dimulai
+        }
     });
 </script>
 @endpush
